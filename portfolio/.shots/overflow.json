@@ -81,12 +81,55 @@
     "noHorizontalScroll": true
   },
   {
+    "route": "/blog/thumbnails-on-the-night-bus",
+    "width": 375,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "title": "Thumbnails on the night bus | Oriha Sumi",
+    "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
+    "route": "/blog/the-tone-drawer",
+    "width": 375,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "title": "The tone drawer | Oriha Sumi",
+    "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
+    "route": "/blog/a-table-at-comic-harbour",
+    "width": 375,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "title": "A table at Comic Harbour | Oriha Sumi",
+    "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
+    "route": "/blog/letters-in-the-margins",
+    "width": 375,
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "title": "Letters in the margins | Oriha Sumi",
+    "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
     "route": "/contact",
     "width": 375,
     "scrollWidth": 375,
     "clientWidth": 375,
     "title": "Contact | Oriha Sumi",
     "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
+    "route": "/contact (sent)",
+    "width": 375,
+    "scrollWidth": 375,
+    "clientWidth": 375,
     "noHorizontalScroll": true
   },
   {
@@ -171,12 +214,55 @@
     "noHorizontalScroll": true
   },
   {
+    "route": "/blog/thumbnails-on-the-night-bus",
+    "width": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "title": "Thumbnails on the night bus | Oriha Sumi",
+    "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
+    "route": "/blog/the-tone-drawer",
+    "width": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "title": "The tone drawer | Oriha Sumi",
+    "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
+    "route": "/blog/a-table-at-comic-harbour",
+    "width": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "title": "A table at Comic Harbour | Oriha Sumi",
+    "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
+    "route": "/blog/letters-in-the-margins",
+    "width": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "title": "Letters in the margins | Oriha Sumi",
+    "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
     "route": "/contact",
     "width": 1280,
     "scrollWidth": 1280,
     "clientWidth": 1280,
     "title": "Contact | Oriha Sumi",
     "wide": [],
+    "noHorizontalScroll": true
+  },
+  {
+    "route": "/contact (sent)",
+    "width": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
     "noHorizontalScroll": true
   }
 ]

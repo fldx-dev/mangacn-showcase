@@ -23,7 +23,7 @@ export default function WorksPage() {
         {WORKS.map((work) => (
           <li key={work.slug} className="flex flex-col gap-2">
             <p className="font-display text-sm uppercase text-muted-foreground">
-              {work.title} <span lang="ja">{work.titleJa}</span>
+              {work.title} <span lang="ja" className="font-dialogue normal-case">{work.titleJa}</span>
             </p>
             <CharacterCard
               className="max-w-none flex-1"
