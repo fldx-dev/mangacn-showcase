@@ -38,4 +38,5 @@ npm run lint
 npm run build
 ```
 
-QA screenshots at 375px and 1280px, and the horizontal-scroll check, are in `.shots/`.
+QA screenshots at 375px and 1280px, and the horizontal-scroll check, are in `.shots/`; regenerate
+them with `npm run build && npm start`, then `npm run shots` in a second terminal.

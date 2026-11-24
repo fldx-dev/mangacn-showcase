@@ -18,7 +18,7 @@ export interface Work {
   years: string;
   volumes: string;
   genre: string;
-  /** Stamp word on the portrait; kept to one to three glyphs so the small stamp stays legible. */
+  /** Stamp word on the portrait; kept to a short Latin word so the small stamp stays legible. */
   status: string;
   logline: string;
   synopsis: string[];
@@ -42,7 +42,7 @@ export const WORKS: Work[] = [
     years: "2023 to now",
     volumes: "3 volumes",
     genre: "Supernatural, slice of life",
-    status: "連載",
+    status: "NOW",
     logline: "A night ferry carries lost spirits across a harbour that is not on any map.",
     synopsis: [
       "Kai Amane pilots the last ferry of the night. His passengers are spirits who forgot where they were going, and the fare is one small memory each.",
@@ -96,7 +96,7 @@ export const WORKS: Work[] = [
     years: "2019 to 2022",
     volumes: "6 volumes, complete",
     genre: "Mecha, drama",
-    status: "完結",
+    status: "END",
     logline: "A retired giant-robot pilot runs a herb shop and tries very hard to stay retired.",
     synopsis: [
       "Tetsu Mogi once piloted the city's last defence robot. Now he grows rosemary in its cockpit, parked behind his shop.",
@@ -123,7 +123,7 @@ export const WORKS: Work[] = [
     years: "2024 to now",
     volumes: "2 volumes",
     genre: "Horror, comedy",
-    status: "連載",
+    status: "NOW",
     logline: "A shrine exorcist who is terrified of the dark has to work the night shift.",
     synopsis: [
       "Shion Kagura can banish any spirit, as long as the lights are on. Her shrine's bell rings eight times at dusk; when it rings a ninth, something has come in.",
@@ -150,7 +150,7 @@ export const WORKS: Work[] = [
     years: "2021",
     volumes: "One-shot",
     genre: "Workplace comedy",
-    status: "読切",
+    status: "ONE",
     logline: "A kaiju the size of a stapler takes a job in accounts.",
     synopsis: [
       "Gonta was meant to be a city-sized monster. He came out pocket-sized, so he applied for an office job instead.",
@@ -177,11 +177,11 @@ export const WORKS: Work[] = [
     years: "2022",
     volumes: "1 volume, complete",
     genre: "Drama, romance",
-    status: "受賞",
+    status: "PRIZE",
     logline: "On a small island, a girl delivers letters that people write to the sea.",
     synopsis: [
       "Nagi Uruma is the island's youngest postal worker. Her round ends at the cliff, where she reads out letters addressed to the sea.",
-      "One morning the sea writes back. The story won the magazine's newcomer prize.",
+      "One morning the sea writes back. The story won the magazine's short-story prize.",
     ],
     note: "Every panel is grey tone on grey tone, except the letters, which stay white.",
     lead: {

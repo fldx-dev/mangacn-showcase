@@ -14,15 +14,18 @@ workaround lives in site code.
 - **Suggested fix:** accept a `linkAs`/`render` prop (or `asChild`-style slot) for the name
   link, defaulting to `<a>`.
 
-## 2. character-card: the status stamp is fixed at `size="sm"` and its word becomes illegible
+## 2. character-card: the status stamp is fixed at `size="sm"`, horizontal, so most words are illegible
 
-- **What happened:** `status` is pressed with `<Stamp size="sm">` and no size prop is exposed.
-  Seven-letter words ("ONGOING", "ONE-SHOT") shrink to unreadable text inside the circle;
-  two-kanji words (連載, 受賞) are still very small at 1280px.
-- **Repro:** `<CharacterCard status="ONGOING" ... />` and view it at any width.
-- **Workaround:** site data uses one to three glyphs (NEW, 連載, 完結, 読切, 受賞).
-- **Suggested fix:** expose `statusSize` (or pass through stamp props), or let the stamp grow
-  with its text.
+- **What happened:** `status` is pressed with `<Stamp size="sm">` (56 px) and the card exposes
+  neither the stamp's `size` nor its `vertical` option. Words longer than about five Latin
+  letters ("ONGOING") shrink to unreadable text inside the ring, and kanji words (連載, 完結),
+  which Stamp would set as a vertical hanko with `vertical`, are set horizontally at text-xs and
+  become a blur at both 375px and 1280px.
+- **Repro:** `<CharacterCard status="ONGOING" ... />` or `status="連載"` and view the card.
+- **Workaround:** site data uses short Latin words (NOW, NEW, END, ONE, PRIZE); checked legible
+  in zoomed crops at 375px and 1280px.
+- **Suggested fix:** pass through stamp props (`statusProps`, or `statusSize` and
+  `statusVertical`), or turn on `vertical` automatically for one to three CJK characters.
 
 ## 3. character-card: `portrait` must be an image URL, unlike manga-frame
 

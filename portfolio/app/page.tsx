@@ -9,7 +9,7 @@ import { ARTIST, WORKS, portraitFor } from "@/lib/works";
 
 const HIGHLIGHTS = [
   { slug: "lantern-tide", callout: "Vol. 3 out now", detail: "The harbour lights go out." },
-  { slug: "salt-letters", callout: "Newcomer prize", detail: "The one that started it all." },
+  { slug: "salt-letters", callout: "Short-story prize", detail: "Read it in one sitting." },
   { slug: "paper-comet", callout: "Brand new", detail: "Chapter 1 free to read." },
 ].map((item) => ({ ...item, work: WORKS.find((work) => work.slug === item.slug)! }));
 
@@ -43,7 +43,7 @@ export default function Home() {
             day job.
           </ThoughtBubble>
           <CaptionBox font="body" className="text-base">
-            Six series, ten volumes and one one-shot. Serialised in {ARTIST.magazine} since 2019.
+            Six stories, thirteen volumes. Serialised in {ARTIST.magazine} since 2019.
           </CaptionBox>
           <Link
             href="/works"
@@ -61,8 +61,8 @@ export default function Home() {
             This <InkMark kind="circle" color="spot">season</InkMark>
           </h2>
           <p className="max-w-prose text-base sm:text-lg">
-            What I am working on, what just shipped and the story that got me{" "}
-            <InkMark kind="underline" color="spot">my first serialisation</InkMark>.
+            What I am working on, what just shipped and the one that{" "}
+            <InkMark kind="underline" color="spot">won me a prize</InkMark>.
           </p>
         </div>
         <ul className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
@@ -100,7 +100,7 @@ export default function Home() {
       <section aria-labelledby="process" className="grid gap-8 md:grid-cols-2 md:items-center">
         <div className="flex flex-col gap-4">
           <h2 id="process" className={HEADING}>
-            How a page <InkMark kind="box">happens</InkMark>
+            How a page <InkMark kind="highlight" color="spot">happens</InkMark>
           </h2>
           <ol className="flex list-decimal flex-col gap-2 pl-5 text-base sm:text-lg">
             <li>Thumbnails on the back of receipts.</li>

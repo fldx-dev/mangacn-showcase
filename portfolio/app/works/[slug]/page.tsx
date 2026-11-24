@@ -9,7 +9,7 @@ import { HEADING, PAGE_COLUMN } from "@/components/site-chrome";
 import { ThoughtBubble } from "@/components/thought-bubble";
 import { WORKS, portraitFor } from "@/lib/works";
 
-// Every work is prerendered; an unknown slug gets a real 404 instead of a streamed one.
+// Every work is prerendered and the route blocks on its params, as in the reference app.
 export const instant = false;
 
 export function generateStaticParams() {
