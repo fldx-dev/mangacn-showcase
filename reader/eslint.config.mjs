@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Installed by @mangacn/sidebar as is; its setState-in-effect trips react-hooks (FINDINGS.md).
     "hooks/use-mobile.ts",
+    // Installed by @mangacn/spread-viewer as is; React Compiler lint rejects its useCallbacks (FINDINGS.md).
+    "components/blocks/spread-viewer/use-spread.ts",
   ]),
 ]);
 

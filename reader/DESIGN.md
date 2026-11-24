@@ -32,5 +32,9 @@ Screenshot:  The library at desktop width: Continue reading cards over shelves o
 - Shell: sidebar-07's layout (collapsible icon rail, a sheet on phones), with Inkwell's own nav.
 - Pages: `/` is library-page (Continue reading, a shelf per series, an empty shelf);
   `/series/[slug]` is series-page (header, genres row, tabs of chapter-list, volume-grid and
-  character-card). Chapter links land on a "coming soon" not-found until the reader is built.
+  character-card); `/series/[slug]/[chapter]` is reader (spread-viewer, page-turn, page-number,
+  a chapter drawer), read right to left like a tankōbon: a spread on desktop, one page on phones.
+- Chapter pages are generated SVG: inked panel grids on the covers' screentones, the series'
+  motif, plain round-headed figures, lettered bubbles and sound effects, one vermilion accent.
+  The last page ends on "To be continued" (or "The end"), then an end card with the next chapter.
 - Covers keep their top-right corner clear-ish: volume-grid and series-header stamp there.

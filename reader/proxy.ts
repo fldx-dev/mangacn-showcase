@@ -1,15 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { SERIES } from "@/lib/series";
+import { findChapter, getSeries } from "@/lib/series";
 
-// Under cacheComponents, an unknown /series/[slug] streams its not-found with a 200 on the first
-// request (dynamicParams is unavailable). The slugs are known up front, so an unknown one is
-// rewritten here to a path no route matches: Next renders app/not-found.tsx with a real 404, and
-// the address bar keeps the requested URL.
-const SLUGS = new Set(SERIES.map((series) => series.slug));
-
+// Under cacheComponents, an unknown /series/[slug] or /series/[slug]/[chapter] streams its
+// not-found with a 200 on the first request (dynamicParams is unavailable). The slugs and chapter
+// numbers are known up front, so an unknown one is rewritten here to a path no route matches: Next
+// renders app/not-found.tsx with a real 404, and the address bar keeps the requested URL.
 export function proxy(request: NextRequest) {
-  const slug = request.nextUrl.pathname.split("/")[2];
-  if (slug && !SLUGS.has(slug)) {
+  const [, , slug, chapter] = request.nextUrl.pathname.split("/");
+  const series = slug ? getSeries(slug) : undefined;
+  if (slug && (!series || (chapter && !findChapter(series, chapter)))) {
     return NextResponse.rewrite(new URL("/__not-found", request.url));
   }
   return NextResponse.next();
