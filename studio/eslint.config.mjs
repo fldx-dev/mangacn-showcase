@@ -5,13 +5,13 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Installed mangacn files are kept as shipped; these two trip Next's rules (see FINDINGS.md).
+  // Installed mangacn files are kept as shipped; these trip Next's rules (see FINDINGS.md).
   {
     files: ["components/app-sidebar.tsx"],
     rules: { "@next/next/no-html-link-for-pages": "off" },
   },
   {
-    files: ["hooks/use-mobile.ts"],
+    files: ["hooks/use-mobile.ts", "components/profile-form.tsx", "components/upload-form.tsx"],
     rules: { "react-hooks/set-state-in-effect": "off" },
   },
   // Override default ignores of eslint-config-next.

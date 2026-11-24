@@ -16,9 +16,10 @@ Studio: a demo SaaS dashboard for a made-up manga creator, built as a showcase o
 ```
 Idea:        The dashboard is the creator's drafting desk.
 Metaphor:    Blueline pencils before inking: cool paper, blue-black lines, one blue spot.
-Signature:   Empty sections are blank manga panels, toned and framed, waiting to be drawn.
+Signature:   Charts printed like a page: bars filled with screentone and outlined in ink,
+             series told apart by tone density, not hue.
 Emotion:     Quiet and organised; loud only at the door (the landing's "Don!").
-Motion verb: Hardly any. The one sound effect slams in once; the app itself stays still.
+Motion verb: Hardly any. The one sound effect slams in once; in the app only the ink-splash loader moves.
 Screenshot:  The landing hero: the display headline beside a focus-line panel.
 ```
 
@@ -37,3 +38,13 @@ Screenshot:  The landing hero: the display headline beside a focus-line panel.
 Any input logs in: a server action sets one httpOnly flag cookie (`studio_session`) and
 redirects to `/app`. `proxy.ts` sends `/app/*` to `/login` without it. Log out deletes it.
 Form values are never read or stored.
+
+## Dashboard
+
+- Overview: four stat cards, two screentone bar charts in captioned panels (chart-tones'
+  patterns, defined once on the page), then the readers' activity feed. The data sits behind a
+  short fake delay so the ink-splash loader is the loading state.
+- Files and Settings: the blocks as shipped, fed Studio's data through their props. Nothing is
+  stored; saves and publishes confirm with a sonner toast.
+- First run: sign-up also sets `studio_onboarding`; while it is there, `/app` goes to
+  `/welcome`. Finishing or "Skip for now" deletes it, so the flow shows once.

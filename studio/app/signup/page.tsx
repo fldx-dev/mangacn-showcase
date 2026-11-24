@@ -5,12 +5,12 @@ import { HalftoneBackground } from "@/components/halftone-background";
 import { MangaFrame } from "@/components/manga-frame";
 import { SfxText } from "@/components/sfx-text";
 import { StudioMark } from "@/components/studio/studio-mark";
-import { signIn } from "@/app/actions";
+import { signUp } from "@/app/actions";
 
 export const metadata: Metadata = { title: "Sign up" };
 
 // signup-02's split screen, composed in site code so the untouched form gets the fake sign-in
-// action (the block's page renders <SignupForm /> with no props; see FINDINGS.md).
+// sign-up action (the block's page renders <SignupForm /> with no props; see FINDINGS.md).
 export default function SignupPage() {
   return (
     <main className="grid min-h-svh lg:grid-cols-2">
@@ -20,7 +20,7 @@ export default function SignupPage() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <SignupForm action={signIn} />
+            <SignupForm action={signUp} />
             <p className="mt-6 text-center text-xs text-muted-foreground">
               Demo desk: nothing you type is stored.
             </p>
