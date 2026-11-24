@@ -1,6 +1,7 @@
 import { AppHeader } from "@/components/studio/app-header";
 import { StudioSidebar } from "@/components/studio/studio-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 // The dashboard shell. proxy.ts keeps it behind the fake session cookie.
 export default function AppLayout({ children }: LayoutProps<"/app">) {
@@ -11,6 +12,8 @@ export default function AppLayout({ children }: LayoutProps<"/app">) {
         <AppHeader />
         <div className="flex min-w-0 flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
       </SidebarInset>
+      {/* The app has no dark mode or theme provider, so sonner is pinned to light. */}
+      <Toaster theme="light" position="bottom-right" />
     </SidebarProvider>
   );
 }

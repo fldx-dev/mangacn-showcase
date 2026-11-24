@@ -107,3 +107,85 @@ around in site code; no installed file was edited.
 - **Repro:** the `/app` header in `.shots/app-overview-1280.png`.
 - **Workaround:** left as shipped.
 - **Suggested fix:** scale `ink-bowing` with the line's length, or keep short separators straight.
+
+## 12. Dashboard blocks each install an unguarded demo route
+
+- **What happened:** activity-01, file-manager-01, upload-01, settings-01, profile-01 and
+  onboarding-01 write `app/activity`, `app/files`, `app/upload`, `app/settings`, `app/profile`
+  and `app/onboarding`. In an app with auth they are public copies beside the real pages, and
+  four of them (files, upload, settings, profile) say in a comment to move the content into
+  "sidebar-07's shell" whatever sidebar the app uses.
+- **Repro:** `npx shadcn@latest add @mangacn/settings-01`, then open `/settings` signed out.
+- **Workaround:** Studio deletes the six routes and renders the blocks' components from its own
+  pages under `/app` (as in finding 8).
+- **Suggested fix:** as finding 8: say so in the install output, or ship the page as an example
+  only (no `registry:page` target).
+
+## 13. profile-01 / upload-01 fail `react-hooks/set-state-in-effect`
+
+- **What happened:** `npm run lint` fails right after install: `components/profile-form.tsx`
+  (`setPreview(undefined)` in the photo effect) and `components/upload-form.tsx` (`setRunning`
+  and the announcement in the "run ended" effect).
+- **Repro:** add both blocks to a `create-next-app@16` project, `npm run lint`.
+- **Workaround:** `eslint.config.mjs` turns the rule off for those two files.
+- **Suggested fix:** derive the preview URL with `useMemo` plus a cleanup effect; end the
+  upload run inside the interval's `setUploads` updater instead of a watching effect.
+
+## 14. settings-01 / profile-01 / upload-01: a save is announced to screen readers only
+
+- **What happened:** Save, Save password and Publish set an `sr-only` `role="status"`; a sighted
+  user sees nothing happen.
+- **Repro:** the block's `/settings`, press Save.
+- **Workaround:** Studio passes `onSave` / `onSaveProfile` / `onSavePassword` / `onPublish` and
+  shows a sonner toast from site code (`components/studio/desk-forms.tsx`).
+- **Suggested fix:** a visible inline status beside the button (or a toast option), keeping the
+  live region.
+
+## 15. onboarding-01: no skip, and its last link 404s by default
+
+- **What happened:** the flow has no Skip / "later" action or prop. The summary's "Go to
+  library" uses `libraryHref`, which defaults to `/library`, a route nothing installs.
+- **Repro:** install onboarding-01, finish the flow, click "Go to library".
+- **Workaround:** Studio passes `libraryHref="/app"` and adds "Skip for now" in its own
+  `/welcome` page header (a form posting a server action that clears the first-run cookie).
+- **Suggested fix:** an `onSkip` prop (rendered beside Back), and a default href of `/` or a
+  required prop.
+
+## 16. onboarding-01 / settings-01 / profile-01 / activity-01: reader copy is fixed
+
+- **What happened:** the blocks are written for a reader app: onboarding-01's title, intro
+  ("your library is ready"), "I mostly read", the daily reading reminder and the genre list;
+  settings-01's "Your shelves, comments and reading history"; profile-01's "What other readers
+  see"; activity-01's kinds (`reading | comments | follows`), filter labels and "Recent
+  activity" heading. None of it is a prop, so a creator dashboard reads slightly off.
+- **Workaround:** Studio keeps the copy and picks data that fits it (the activity feed is
+  Lantern Tide's readers reading, commenting and following).
+- **Suggested fix:** `title` / `description` props per block, and `filters` / `kindLabels`
+  props on `ActivityFeed` with the reader set as default.
+
+## 17. activity-01: `ActivityStats` uses a fixed element id
+
+- **What happened:** the section's heading id is the literal `activity-stats-title`, so two
+  `ActivityStats` on one page share an id (and the second section is labelled by the first).
+- **Repro:** render `<ActivityStats />` twice; check `aria-labelledby`.
+- **Workaround:** none needed: Studio renders it once.
+- **Suggested fix:** `React.useId()`, as `ActivityFeed` already does.
+
+## 18. sonner: follows `next-themes`, but nothing installs its provider
+
+- **What happened:** the Toaster reads `useTheme()` from `next-themes`; without a
+  `ThemeProvider` (mangacn's theme does not set one up) the theme is `undefined`, so it falls
+  back to `"system"` and sonner follows the OS dark setting while the site stays light.
+- **Repro:** read `components/ui/sonner.tsx`: `const { theme = "system" } = useTheme()`, passed to
+  sonner's `theme`; with no provider that is always `"system"` (read from the code, not run
+  under a dark OS).
+- **Workaround:** Studio passes `theme="light"` (the Toaster spreads its props last).
+- **Suggested fix:** mention the provider in the docs, or read the `.dark` class on `<html>`.
+
+## 19. settings-01 and profile-01 both edit the display name
+
+- **What happened:** settings-01's Account section and profile-01's Public profile each have a
+  required "Display name" field, so on one settings page the same value is edited twice.
+- **Workaround:** Studio shows both blocks as shipped on `/app/settings`, filled from one value.
+- **Suggested fix:** let settings-01 hide a section or field (`sections={[...]}`), or drop the
+  display name from one of the two blocks.
