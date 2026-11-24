@@ -95,7 +95,8 @@ each workaround lives in site code.
   Compiler rule in `eslint-config-next` 16: two errors, `npm run lint` exits 1.
 - **Repro:** fresh create-next-app + `npx shadcn@latest add @mangacn/spread-viewer`, `npm run lint`:
   `use-spread.ts 195:5 error Compilation Skipped: Existing memoization could not be preserved`.
-- **Workaround:** the file is in `eslint.config.mjs`'s `globalIgnores`, beside `use-mobile.ts` (3).
+- **Workaround:** `eslint.config.mjs` turns off only `react-hooks/preserve-manual-memoization`,
+  only for that file; the rest of the file is still linted.
 - **Suggested fix:** drop the manual `useCallback`s (the compiler memoizes), or shape them so the
   compiler can preserve them.
 

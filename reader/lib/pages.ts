@@ -272,7 +272,7 @@ function titlePage({ series, chapter }: PageInput): string {
 
 /** What the chapter's last panel says. */
 function ending({ series, chapter }: PageInput): string {
-  const done = series.status !== "ongoing" && chapter.number === series.chapters.length;
+  const done = series.status === "completed" && chapter.number === series.chapters.length;
   return done ? "The end" : "To be continued";
 }
 
