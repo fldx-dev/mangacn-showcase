@@ -1,0 +1,215 @@
+[
+  {
+    "width": 375,
+    "route": "/",
+    "label": "default",
+    "status": 200,
+    "sw": 375,
+    "cw": 375,
+    "title": "Library | Inkwell",
+    "h1": "Library",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "route": "/series/the-saltglass-keeper",
+    "label": "default",
+    "status": 200,
+    "sw": 375,
+    "cw": 375,
+    "title": "The Saltglass Keeper | Inkwell",
+    "h1": "The Saltglass Keeper",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "route": "/series/the-saltglass-keeper",
+    "label": "tab:Volumes",
+    "status": 200,
+    "sw": 375,
+    "cw": 375,
+    "title": "The Saltglass Keeper | Inkwell",
+    "h1": "The Saltglass Keeper",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "route": "/series/the-saltglass-keeper",
+    "label": "tab:Cast",
+    "status": 200,
+    "sw": 375,
+    "cw": 375,
+    "title": "The Saltglass Keeper | Inkwell",
+    "h1": "The Saltglass Keeper",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "route": "/series/paper-kite-courier",
+    "label": "default",
+    "status": 200,
+    "sw": 375,
+    "cw": 375,
+    "title": "Paper Kite Courier | Inkwell",
+    "h1": "Paper Kite Courier",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "route": "/series/ninth-floor-orchestra",
+    "label": "default",
+    "status": 200,
+    "sw": 375,
+    "cw": 375,
+    "title": "Ninth Floor Orchestra | Inkwell",
+    "h1": "Ninth Floor Orchestra",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "route": "/series/the-saltglass-keeper/9",
+    "label": "default",
+    "status": 404,
+    "sw": 375,
+    "cw": 375,
+    "title": "Chapter reader coming soon | Inkwell",
+    "h1": "Chapter reader coming soon",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "route": "/no-such-page",
+    "label": "default",
+    "status": 404,
+    "sw": 375,
+    "cw": 375,
+    "title": "Page not found | Inkwell",
+    "h1": "Not on any shelf",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "route": "/series/no-such-series",
+    "label": "default",
+    "status": 200,
+    "sw": 375,
+    "cw": 375,
+    "title": "Inkwell: original webcomics to read online",
+    "h1": "Not on any shelf",
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "errors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  {
+    "width": 1280,
+    "route": "/",
+    "label": "default",
+    "status": 200,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "Library | Inkwell",
+    "h1": "Library",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "route": "/series/the-saltglass-keeper",
+    "label": "default",
+    "status": 200,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "The Saltglass Keeper | Inkwell",
+    "h1": "The Saltglass Keeper",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "route": "/series/the-saltglass-keeper",
+    "label": "tab:Volumes",
+    "status": 200,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "The Saltglass Keeper | Inkwell",
+    "h1": "The Saltglass Keeper",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "route": "/series/the-saltglass-keeper",
+    "label": "tab:Cast",
+    "status": 200,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "The Saltglass Keeper | Inkwell",
+    "h1": "The Saltglass Keeper",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "route": "/series/paper-kite-courier",
+    "label": "default",
+    "status": 200,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "Paper Kite Courier | Inkwell",
+    "h1": "Paper Kite Courier",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "route": "/series/ninth-floor-orchestra",
+    "label": "default",
+    "status": 200,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "Ninth Floor Orchestra | Inkwell",
+    "h1": "Ninth Floor Orchestra",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "route": "/series/the-saltglass-keeper/9",
+    "label": "default",
+    "status": 404,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "Chapter reader coming soon | Inkwell",
+    "h1": "Chapter reader coming soon",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "route": "/no-such-page",
+    "label": "default",
+    "status": 404,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "Page not found | Inkwell",
+    "h1": "Not on any shelf",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "route": "/series/no-such-series",
+    "label": "default",
+    "status": 404,
+    "sw": 1280,
+    "cw": 1280,
+    "title": "Page not found | Inkwell",
+    "h1": "Not on any shelf",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "errors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  }
+]
