@@ -88,6 +88,99 @@ each workaround lives in site code.
 - **Workaround:** re-ran with `--overwrite` so mangacn's inked button replaced stock's.
 - **Suggested fix:** document `--overwrite` in the install instructions.
 
+## 9. `use-spread.ts` (spread-viewer) fails `next lint` (react-hooks/preserve-manual-memoization)
+
+- **What happened:** `npx shadcn@latest add @mangacn/reader` installs spread-viewer's
+  `use-spread.ts`, whose `useCallback`s (`goToSpread` and the ones built on it) trip the React
+  Compiler rule in `eslint-config-next` 16: two errors, `npm run lint` exits 1.
+- **Repro:** fresh create-next-app + `npx shadcn@latest add @mangacn/spread-viewer`, `npm run lint`:
+  `use-spread.ts 195:5 error Compilation Skipped: Existing memoization could not be preserved`.
+- **Workaround:** `eslint.config.mjs` turns off only `react-hooks/preserve-manual-memoization`,
+  only for that file; the rest of the file is still linted.
+- **Suggested fix:** drop the manual `useCallback`s (the compiler memoizes), or shape them so the
+  compiler can preserve them.
+
+## 10. `Reader` is a `main` with an h1, or a `section` with an h2; nothing in between
+
+- **What happened:** `Reader` defaults to `as="main"` and an h1. Inside the sidebar shell
+  (`SidebarInset` already renders the page's `<main>`) it has to be `as="section"`, which also
+  demotes its title to an h2, so the page is left without an h1.
+- **Workaround:** `components/chapter-reader.tsx` renders a visually hidden h1 (series, chapter
+  and title) before `<Reader as="section">`.
+- **Suggested fix:** a `headingLevel` prop independent of `as`.
+
+## 11. Arrow keys only work once the pages have focus
+
+- **What happened:** spread-viewer handles its keys on its own focusable region ("nothing else
+  takes the arrow keys"). On a fresh page load nothing is focused, so Left/Right/Home/End do
+  nothing until the reader clicks or tabs into the pages.
+- **Repro:** render `<Reader>` as installed, load the page and press Left without clicking or
+  tabbing first: no turn.
+- **Workaround:** a window `keydown` listener in `chapter-reader.tsx` turns the page when the key
+  lands on `body` (or a non-interactive part of the reader) and the viewer has not already
+  handled it (`defaultPrevented`). It turns with the exported `spreadStarts` / `spreadIndexOf`.
+- **Suggested fix:** a `globalKeys` (or `keyTarget="document"`) option on spread-viewer / `Reader`.
+
+## 12. No tap zones on the pages, and no slot to add them
+
+- **What happened:** spread-viewer turns with its buttons, the keys and a swipe; tapping the left
+  or right of a page (what most web readers do) does nothing, and neither `Reader` nor
+  `SpreadViewer` takes children or an overlay to put zones over the pages.
+- **Workaround:** `chapter-reader.tsx` delegates `click` on its wrapper, finds
+  `[data-slot="spread-viewer-pages"]` and turns by which half was hit (left reads on, right to
+  left). A swipe also ends in a click, so a press that moved more than 10px is ignored, or a swipe
+  would turn twice.
+- **Suggested fix:** a `tapToTurn` option on spread-viewer, next to its swipe handler.
+
+## 13. A page can only be an image (`SpreadPage` is `{ src, alt }`)
+
+- **What happened:** manga-frame takes a lettered scene as `children` (real text, theme fonts),
+  but spread-viewer passes only `src`/`alt` to it. Pages built from mangacn's own `panel`,
+  `speech-bubble` and `sfx-text` cannot go in the reader; dialogue has to be drawn into the image,
+  so it is not selectable or translatable, and screen readers get only the alt text.
+- **Workaround:** `lib/pages.ts` draws each page as SVG (panels, screentone, figures, lettered
+  bubbles and sound effects), served by `app/art/[slug]/[chapter]/[page]/route.ts`; each page's
+  alt text lists its dialogue. `panel`, `speech-bubble` and `sfx-text` are used as real
+  components in the end-of-chapter card instead.
+- **Suggested fix:** `SpreadPage` as `{ src, alt } | { content: ReactNode; label: string }`,
+  rendered through manga-frame's scene mode.
+
+## 14. `Reader` has no chapter-to-chapter navigation and does not forward inner-block options
+
+- **What happened:** at the last page `Next` just disables; there is no next/previous chapter link
+  or end-of-chapter slot. `Reader` also does not pass through spread-viewer's `blank` (a lone first
+  or last page faces plain paper) or chapter-list's `latest`, and the drawer's list does not mark
+  the open chapter: a finished series' last chapter is stamped NEW in the drawer.
+- **Workaround:** `chapter-reader.tsx` puts a "Chapters" nav (next / previous chapter) under the
+  reader, and an end card (panel, sfx-text, speech-bubble, button) once the last page is open.
+  The drawer is left as is.
+- **Suggested fix:** `previousChapter` / `nextChapter` props (or an `end` slot), and pass-through
+  props for the inner blocks (`blank`, `latest`, a current chapter).
+
+## 15. `single` needs JavaScript, so the server renders the wrong layout for half the readers
+
+- **What happened:** one page vs. a spread is a `single` prop "from a media query"; the server
+  cannot know the width. Whatever it renders, phones or desktops see the other layout until
+  hydration, then the reader re-lays out. The `?page=` address (`useReader`'s `url`) is also read
+  only after mount, so a deep link renders page 1 and then plays a page turn to the asked page.
+- **Workaround:** `useSyncExternalStore` over `matchMedia("(max-width: 767px)")` with the single
+  page as the server snapshot. Accepted the switch and the turn.
+- **Suggested fix:** a CSS-driven `single="auto"` (container query: one page below a width), and
+  no page-turn animation for the first sync from the address.
+
+## 16. `Button` rendered as a link is announced as a button
+
+- **What happened:** the documented way to make a mangacn `Button` a link,
+  `<Button nativeButton={false} render={<Link href="..." />}>`, renders
+  `<a role="button" href="...">` (Base UI adds the role for non-native buttons). Screen readers
+  announce the chapter links, the end card's "Read chapter 4" and the 404's "Back to the library"
+  as buttons, and `getByRole("link")` does not find them.
+- **Repro:** `/series/the-saltglass-keeper/3`: the "Next: chapter 4" link's outerHTML starts
+  `<a role="button" ...`.
+- **Workaround:** none; accepted (the links work with mouse, touch and Enter).
+- **Suggested fix:** a `ButtonLink` (or `asLink`) that keeps the inked frame and the button
+  classes on a plain anchor, without `role="button"`.
+
 ---
 
 Items installed and where they are used:
@@ -97,15 +190,19 @@ Items installed and where they are used:
 | theme, theme-sepia | `app/globals.css` (site theme), fonts in `app/layout.tsx` |
 | library-page (`ContinueReading`, `Shelf`) | `/` |
 | series-page (`SeriesHeader`) | `/series/[slug]` |
-| chapter-list | `/series/[slug]` Chapters tab |
+| chapter-list | `/series/[slug]` Chapters tab; the reader's chapter drawer |
 | volume-grid | `/` shelves (via `Shelf`), `/series/[slug]` Volumes tab |
 | character-card (via series-page) | `/series/[slug]` Cast tab |
 | sidebar, breadcrumb, separator (via sidebar-07) | every page's shell (`components/reader-shell.tsx`) |
 | tabs (via series-page) | `/series/[slug]` |
-| panel | 404 and chapter coming-soon pages |
-| caption-box | genres row on `/series/[slug]`; 404 and coming-soon pages |
-| speech-bubble | `/` intro; 404 and coming-soon pages |
+| reader (`Reader`, `useReader`) | `/series/[slug]/[chapter]` (`components/chapter-reader.tsx`) |
+| spread-viewer, page-turn, page-number (via reader) | `/series/[slug]/[chapter]`: the pages, the turn, the folios |
+| drawer, kbd (via reader) | `/series/[slug]/[chapter]`: chapter drawer, key help |
+| panel | 404 page; end-of-chapter card |
+| caption-box | genres row on `/series/[slug]`; 404 page |
+| speech-bubble | `/` intro; 404 page; end-of-chapter card |
+| sfx-text | end-of-chapter card |
 | button, empty, progress, card, manga-frame, stamp, item, ink-mark, page-number, panel-grid, aspect-ratio, ink-frame | inside the blocks above |
 | sheet, tooltip, input, skeleton, use-mobile (via sidebar) | inside the sidebar (sheet on phones, tooltips when collapsed) |
 | sidebar-07 (`app-sidebar`, `nav-*`, `team-switcher`) with avatar, dropdown-menu, collapsible | installed, unused (see 2) |
-| power-gauge, power-gauge-burst, emanata, sfx-text | pulled in as dependencies, not used by Inkwell pages |
+| power-gauge, power-gauge-burst, emanata | pulled in as dependencies, not used by Inkwell pages |

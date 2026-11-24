@@ -15,6 +15,12 @@ const eslintConfig = defineConfig([
     // Installed by @mangacn/sidebar as is; its setState-in-effect trips react-hooks (FINDINGS.md).
     "hooks/use-mobile.ts",
   ]),
+  // Installed by @mangacn/spread-viewer as is; React Compiler lint rejects its useCallbacks
+  // (FINDINGS.md). Only that rule is off, and only for this file.
+  {
+    files: ["components/blocks/spread-viewer/use-spread.ts"],
+    rules: { "react-hooks/preserve-manual-memoization": "off" },
+  },
 ]);
 
 export default eslintConfig;

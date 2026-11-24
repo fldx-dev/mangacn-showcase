@@ -362,8 +362,19 @@ export function continueReading(): ReadingProgress[] {
         page,
         pages: found.pages,
         cover: { src: coverArt(series.title, series.motif), alt: "" },
-        href: chapterHref(series, chapter),
+        // The reader opens at ?page= (from 1).
+        href: `${chapterHref(series, chapter)}?page=${page}`,
       },
     ];
   });
+}
+
+/** The chapter a URL segment names, matched exactly ("3", not "03" or "3.0"). */
+export function findChapter(series: InkSeries, segment: string): InkChapter | undefined {
+  return series.chapters.find((chapter) => String(chapter.number) === segment);
+}
+
+/** A chapter page's image URL; `page` is its index, from 0. */
+export function pageSrc(series: InkSeries, chapter: number, page: number): string {
+  return `/art/${series.slug}/${chapter}/${page + 1}`;
 }

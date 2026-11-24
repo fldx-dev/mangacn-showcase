@@ -2,15 +2,15 @@
 // a title band. An SVG inside <img> cannot read the page's CSS variables or webfonts, so the
 // sepia palette is written out here and type falls back to generic stacks.
 
-const PAPER = "#f3e8cf";
-const TONE = "#d9c8a6";
-const INK = "#2a1c12";
-const SPOT = "#b34a2b";
+export const PAPER = "#f3e8cf";
+export const TONE = "#d9c8a6";
+export const INK = "#2a1c12";
+export const SPOT = "#b34a2b";
 
 export type Motif = "lighthouse" | "kite" | "tower";
 
 /** Screentone fills: dots, diagonal lines or crosshatch, at a given density. */
-function tones(id: string): string {
+export function tones(id: string): string {
   return `<defs>
 <pattern id="${id}-dots" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="${TONE}"/><circle cx="4" cy="4" r="1.9" fill="${INK}" opacity=".55"/></pattern>
 <pattern id="${id}-fine" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="${PAPER}"/><circle cx="3" cy="3" r="1" fill="${INK}" opacity=".5"/></pattern>
@@ -21,7 +21,7 @@ function tones(id: string): string {
 
 const FIELDS = ["dots", "lines", "cross", "fine"] as const;
 
-function motif(kind: Motif, n: number, id: string): string {
+export function motif(kind: Motif, n: number, id: string): string {
   switch (kind) {
     case "lighthouse": {
       const beam = -18 + (n % 4) * 9;
@@ -56,7 +56,7 @@ function motif(kind: Motif, n: number, id: string): string {
   }
 }
 
-function escape(text: string): string {
+export function escape(text: string): string {
   return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;");
 }
 
