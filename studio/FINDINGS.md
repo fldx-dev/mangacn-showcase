@@ -20,7 +20,8 @@ around in site code; no installed file was edited.
 
 - **What happened:** the inputs carry `id` but no `name`, so a submitted `FormData` is empty and a
   server action cannot read the email or password.
-- **Repro:** pass `action={async (fd) => console.log([...fd])}` to `LoginForm`; it logs `[]`.
+- **Repro:** read `components/login-form.tsx` / `components/signup-form.tsx`: no `<Input>` has a
+  `name=` attribute, and the browser only puts named controls in `FormData`.
 - **Workaround:** none needed for Studio: its fake auth ignores the values on purpose.
 - **Suggested fix:** add `name="email"`, `name="password"` (and `name`, `confirm-password` on
   signup), matching stock shadcn's intent for real forms.
@@ -87,3 +88,22 @@ around in site code; no installed file was edited.
   `eslint.config.mjs` turns off the one rule per file.
 - **Suggested fix:** use `next/link` in Next-targeted blocks (or a framework-neutral link prop);
   in `use-mobile`, read the media query with `useSyncExternalStore`.
+
+## 10. `shadcn add` stops on an overwrite prompt after `shadcn init`
+
+- **What happened:** `shadcn init` (base-nova) writes stock `components/ui/button.tsx`; adding
+  login-02 / signup-02 / sidebar-08 then asks "The file button.tsx already exists. Would you like
+  to overwrite?" even with `--yes`, and the install stops there in a non-interactive shell.
+- **Repro:** `create-next-app@16`, `npx shadcn@latest init -d`, add the registry, then
+  `npx shadcn@latest add @mangacn/login-02 --yes`.
+- **Workaround:** re-run with `--overwrite` (mangacn's button replaces stock's).
+- **Suggested fix:** say so in the install docs (`--overwrite` after `init`), or ship a mangacn
+  init/preset that does not write stock ui files first.
+
+## 11. Vertical `Separator` at small heights draws as a curve
+
+- **What happened:** in sidebar-08's header (`data-vertical:h-4`), the hand-drawn separator bows
+  into a ")" shape next to the trigger, which reads like a stray bracket.
+- **Repro:** the `/app` header in `.shots/app-overview-1280.png`.
+- **Workaround:** left as shipped.
+- **Suggested fix:** scale `ink-bowing` with the line's length, or keep short separators straight.
