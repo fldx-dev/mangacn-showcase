@@ -113,7 +113,8 @@ around in site code; no installed file was edited.
 - **What happened:** activity-01, file-manager-01, upload-01, settings-01, profile-01 and
   onboarding-01 write `app/activity`, `app/files`, `app/upload`, `app/settings`, `app/profile`
   and `app/onboarding`. In an app with auth they are public copies beside the real pages, and
-  their comments point at "sidebar-07's shell" whatever sidebar the app uses.
+  four of them (files, upload, settings, profile) say in a comment to move the content into
+  "sidebar-07's shell" whatever sidebar the app uses.
 - **Repro:** `npx shadcn@latest add @mangacn/settings-01`, then open `/settings` signed out.
 - **Workaround:** Studio deletes the six routes and renders the blocks' components from its own
   pages under `/app` (as in finding 8).
@@ -175,7 +176,9 @@ around in site code; no installed file was edited.
 - **What happened:** the Toaster reads `useTheme()` from `next-themes`; without a
   `ThemeProvider` (mangacn's theme does not set one up) the theme is `undefined`, so it falls
   back to `"system"` and sonner follows the OS dark setting while the site stays light.
-- **Repro:** install sonner, mount `<Toaster />` without a ThemeProvider, set the OS to dark.
+- **Repro:** read `components/ui/sonner.tsx`: `const { theme = "system" } = useTheme()`, passed to
+  sonner's `theme`; with no provider that is always `"system"` (read from the code, not run
+  under a dark OS).
 - **Workaround:** Studio passes `theme="light"` (the Toaster spreads its props last).
 - **Suggested fix:** mention the provider in the docs, or read the `.dark` class on `<html>`.
 

@@ -24,7 +24,7 @@ content are invented. Auth is fake: any email and password log in.
 | `signup-02` (`SignupForm`) | `/signup` |
 | `sidebar-08` (`ui/sidebar`, `NavSecondary`, header pattern) | `/app/*` |
 | `manga-frame`, `halftone-background`, `focus-lines`, `sfx-text` | `/`, `/login`, `/signup` |
-| `panel` | `/`, `/forgot-password`, `/app/*` |
+| `panel` | `/`, `/forgot-password`, `/app` (chart panels) |
 | `chart`, `chart-tones` | `/app` (bar charts filled with screentone) |
 | `activity-01` (`ActivityStats`, `ActivityFeed`; `stat-card`, `timeline`, `toggle-group`, `badge`) | `/app` |
 | `ink-splash-loader` | `/app` (Suspense fallback) |
