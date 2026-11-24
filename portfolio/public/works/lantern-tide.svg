@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+<defs>
+<pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.3" fill="#b4bcaf"/></pattern>
+<pattern id="fine" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" fill="#131d26" opacity=".55"/></pattern>
+<pattern id="lines" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.4" height="7" fill="#b4bcaf"/></pattern>
+<radialGradient id="fade" cx=".5" cy=".42" r=".6"><stop offset=".55" stop-color="#e9efe1" stop-opacity="1"/><stop offset="1" stop-color="#e9efe1" stop-opacity="0"/></radialGradient>
+</defs><rect width="300" height="400" fill="#e9efe1"/><rect width="300" height="400" fill="url(#lines)"/><rect width="300" height="400" fill="url(#fade)"/>
+<path d="M0 340 Q40 320 80 340 T160 340 T240 340 T320 340 V400 H0 Z" fill="url(#fine)"/>
+<path d="M40 400 C48 318 96 292 150 290 C204 292 252 318 260 400 Z" fill="#131d26" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M132 250 L132 292 Q150 302 168 292 L168 250" fill="#e9efe1" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M96 176 C96 120 204 120 204 176 C204 230 178 262 150 262 C122 262 96 230 96 176 Z" fill="#e9efe1" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="128" cy="190" rx="7" ry="10" fill="#131d26"/><ellipse cx="172" cy="190" rx="7" ry="10" fill="#131d26"/>
+<circle cx="130" cy="186" r="2.6" fill="#e9efe1"/><circle cx="174" cy="186" r="2.6" fill="#e9efe1"/><path d="M142 232 q8 5 16 0" fill="none" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M92 162 C94 120 206 120 208 162 L222 168 L78 168 Z" fill="#131d26" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="128" y="138" width="44" height="12" fill="#e9efe1" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<g transform="translate(222 250)"><line x1="0" y1="-40" x2="0" y2="-10" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="-20" y="-10" width="40" height="52" rx="10" fill="#b8137a" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-20 6 H20 M-20 24 H20" stroke="#131d26" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g></svg>
