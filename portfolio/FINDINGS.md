@@ -37,6 +37,61 @@ workaround lives in site code.
 - **Suggested fix:** let `portrait` also take a `ReactNode` that is passed to manga-frame as
   its scene.
 
+## 4. chat-thread: `shadcn add --yes` stops on the `button.tsx` overwrite prompt
+
+- **What happened:** chat-thread pulls in mangacn's restyled `button` (via input-group,
+  attachment, message-scroller). With a stock shadcn `components/ui/button.tsx` already
+  present, `npx shadcn@latest add @mangacn/chat-thread --yes` still asks "button.tsx already
+  exists. Overwrite?"; non-interactive, the install ends there with only part of the files
+  written (vertical-text, message, emanata) and no chat-thread block.
+- **Repro:** a project from `shadcn init` with `ui/button`, then the command above without a TTY.
+- **Workaround:** re-ran with `--overwrite`. Nothing else in the site used the stock button, so
+  taking mangacn's version (InkFrame outline) was safe.
+- **Suggested fix:** document that mangacn replaces `ui/button`, or ship it under its own name
+  so it never collides with the stock file.
+
+## 5. chat-thread: avatar initials take punctuation
+
+- **What happened:** the fallback avatar shows the first character of the first two words of
+  `author.name`, punctuation included. An author named "Oriha (studio inbox)" got the
+  initials "O(".
+- **Repro:** `<ChatThread messages={[{ author: { id: "a", name: "Oriha (studio inbox)" }, ... }]} />`.
+- **Workaround:** named the author "Oriha Sumi" (initials OS).
+- **Suggested fix:** take initials from letter characters only (`/p{L}/u`), or accept an
+  `initials` field on `ChatAuthor`.
+
+## 6. chat-thread: seed messages need a fixed date, so a demo thread shows two days
+
+- **What happened:** `at` is required and must be fixed for hydration, while messages sent
+  with `useChatThread().send` get the browser's current time. A scripted greeting therefore
+  sits under its own date line, and the reader's first reply opens another one on any other day.
+- **Repro:** `/contact` on any day but 24 November 2026: the greeting's date line, then today's.
+- **Workaround:** accepted; the greeting reads as an earlier auto-reply.
+- **Suggested fix:** let `at` be optional (no date line or time for that message), or add a
+  `hideDates` prop for scripted threads.
+
+## 7. character-card: the ruby reading falls back to a system font
+
+- **What happened:** the reading over the name is set `font-sans` (Geist, Latin only), so its
+  kana render in whatever Japanese system font the reader has (Yu Gothic on Windows, checked
+  with CDP `CSS.getPlatformFontsForNode`), not in the theme's Japanese face.
+- **Repro:** `/works`, inspect the `rt` of any card.
+- **Workaround:** none from site code without overriding the card's internals; left as is.
+- **Suggested fix:** set the `rt` in `font-dialogue` (which falls through to
+  `--font-dialogue-ja`) or a dedicated `--font-ruby` token.
+
+## Review fixes (PR #3)
+
+- **Same portrait twice at 375px on `/works/[slug]`:** the hero manga-frame is now
+  `hidden md:block`; below `md` only the lead's character card shows the portrait (it carries
+  the status stamp too). At `md` and up the two sit in different rows of the layout.
+- **Japanese titles in Dela Gothic One:** next/font has no `japanese` subset for Dela Gothic One
+  or Yusei Magic (its `subsets` only choose what is preloaded; the Japanese glyphs come from
+  Google's unicode-range slices on demand). Japanese text is now set in `font-dialogue`, which
+  falls through to Yusei Magic (`--font-dialogue-ja`), as DESIGN.md intends: the
+  `/works` series titles and the footer name. CDP confirms Yusei Magic (custom font) renders
+  them, and the vertical titles on `/blog`.
+
 ## Not mangacn (scaffold)
 
 - `shadcn init` writes `--font-sans: var(--font-sans)` into `globals.css` while the

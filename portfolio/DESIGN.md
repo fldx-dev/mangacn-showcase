@@ -37,6 +37,12 @@ only appear where the artist would point something out (new volume, prize, first
   each with one prop that tells you the series (lantern, paper helmet, rosemary, charm, mug,
   letter).
 
+- Blog: the studio diary. Each post's Japanese title runs top to bottom as its spine
+  (vertical-text), pull lines are narration boxes and asides are thought bubbles with a margin
+  arrow, so a post reads like a page with the artist's notes on it.
+- Contact: the form is a conversation with the studio inbox (chat-thread). Three questions,
+  then a red SENT hanko. Client-side only.
+
 ## Responsive
 
 One column at 375px; arrows switch direction with the layout (the hero arrow points up at the

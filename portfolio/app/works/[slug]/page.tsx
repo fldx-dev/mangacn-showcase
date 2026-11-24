@@ -49,7 +49,8 @@ export default async function WorkPage({ params }: PageProps<"/works/[slug]">) {
           aspect="3/4"
           matte
           caption={`${work.lead.name}, lead of ${work.title}.`}
-          className="mx-auto w-full max-w-sm"
+          // Below md the lead card further down shows the same portrait, so the hero frame is hidden.
+          className="mx-auto hidden w-full max-w-sm md:block"
         />
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">

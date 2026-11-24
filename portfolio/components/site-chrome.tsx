@@ -36,7 +36,7 @@ export function SiteFooter() {
     <footer className="mt-auto border-t-2 border-ink bg-paper">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-6 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p className="font-display uppercase">
-          {ARTIST.name} <span lang="ja">{ARTIST.nameJa}</span>
+          {ARTIST.name} <span lang="ja" className="font-dialogue">{ARTIST.nameJa}</span>
         </p>
         <p className="text-muted-foreground">
           A made-up artist and made-up series, built to show mangacn components.

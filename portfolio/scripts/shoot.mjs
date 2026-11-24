@@ -7,11 +7,30 @@ const base = process.argv[2] ?? "http://localhost:3000";
 const appDir = process.cwd();
 
 const SLUGS = ["lantern-tide", "paper-comet", "rust-and-rosemary", "ninth-bell", "pocket-kaiju-office", "salt-letters"];
-const ROUTES = ["/", "/works", ...SLUGS.map((s) => `/works/${s}`), "/blog", "/contact"];
-const SHOOT = new Set(["/", "/works", "/works/lantern-tide", "/blog", "/contact"]);
+const POSTS = ["thumbnails-on-the-night-bus", "the-tone-drawer", "a-table-at-comic-harbour", "letters-in-the-margins"];
+const ROUTES = ["/", "/works", ...SLUGS.map((s) => `/works/${s}`), "/blog", ...POSTS.map((s) => `/blog/${s}`), "/contact"];
+const SHOOT = new Set(["/", "/works", "/works/lantern-tide", "/blog", "/blog/thumbnails-on-the-night-bus", "/contact"]);
 const WIDTHS = [375, 1280];
 const outDir = join(appDir, ".shots");
 mkdirSync(outDir, { recursive: true });
+
+// /contact: answer the three questions, then shoot the sent confirmation.
+async function contactFlow(page, width) {
+  await page.goto(base + "/contact", { waitUntil: "networkidle" });
+  const field = page.getByRole("textbox", { name: "Message" });
+  for (const answer of ["Mika Test", "mika@example.com", "Could you draw a ferry for our zine?"]) {
+    await field.fill(answer);
+    await field.press("Enter");
+    await page.waitForTimeout(1200);
+  }
+  await page.getByRole("status").getByText("SENT", { exact: true }).waitFor();
+  await page.waitForTimeout(800);
+  const m = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth }));
+  const ok = m.scrollWidth <= m.clientWidth;
+  results.push({ route: "/contact (sent)", width, ...m, noHorizontalScroll: ok });
+  await page.screenshot({ path: join(outDir, `contact-sent-${width}.png`),fullPage: true });
+  console.log(width, "/contact (sent)", ok ? "OK" : "OVERFLOW", m.scrollWidth, m.clientWidth);
+}
 
 const browser = await chromium.launch();
 const results = [];
@@ -40,6 +59,7 @@ for (const width of WIDTHS) {
     }
     console.log(width, route, ok ? "OK" : "OVERFLOW", m.scrollWidth, m.clientWidth, m.title, ok ? "" : m.wide.join(" | "));
   }
+  await contactFlow(page, width);
   if (errors.length) console.log("console errors @", width, errors);
   await page.close();
 }
