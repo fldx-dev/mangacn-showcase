@@ -1,0 +1,573 @@
+/* The authored crew heroes (components/crew/hero-*.tsx). Unlayered, like app/motion.css, and
+   loaded for the whole session once a crew page has been opened, so every rule is namespaced.
+   Nothing here sets `display` on an element that also carries a Tailwind display utility. */
+
+/* ---------------------------------------------------------------------------------------------
+   Zoro: three sword strokes. `--cut` is how far a flat stroke drops across the full width; it is
+   a share of the viewport, so the angle is the same on a phone and on a desk. Only backgrounds
+   are clipped; the content is padded clear of every cut.
+   ------------------------------------------------------------------------------------------ */
+.zoro {
+  --cut: 7vw;
+  --cut-steep: 24vw;
+  --pad: 1rem;
+  --blade: 2.5px;
+}
+@media (min-width: 40rem) {
+  .zoro {
+    --pad: 1.5rem;
+  }
+}
+
+.zoro-name {
+  padding: 1.75rem 0 calc(var(--cut) + 1rem);
+}
+.zoro-name__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+}
+.zoro-name__title {
+  font-size: clamp(2.75rem, 14vw, 8.5rem);
+  line-height: 0.86;
+}
+.zoro-name__last {
+  margin-left: 0.5em;
+}
+
+.zoro-blade {
+  position: absolute;
+  background: var(--spot);
+  pointer-events: none;
+}
+/* A flat stroke: a sliver along the box's rising diagonal, widest past the middle. */
+.zoro-blade--one,
+.zoro-blade--three,
+.zoro-blade--two-flat {
+  right: 0;
+  left: 0;
+  clip-path: polygon(
+    0 calc(100% - 8px),
+    62% calc(38% + 2px - var(--blade)),
+    100% 8px,
+    62% calc(38% + 2px + var(--blade))
+  );
+}
+.zoro-blade--one {
+  bottom: -11px;
+  height: calc(var(--cut) + 10px);
+}
+.zoro-blade--three {
+  top: calc(-1 * var(--cut) - 17px);
+  height: calc(var(--cut) + 22px);
+}
+.zoro-blade--two-flat {
+  right: calc(-1 * var(--pad));
+  bottom: -11px;
+  left: calc(-1 * var(--pad));
+  height: calc(var(--cut-steep) + 10px);
+}
+.zoro-blade--two,
+.zoro-mid__clip {
+  display: none;
+}
+
+.zoro-mid {
+  padding-bottom: calc(var(--cut) + 2.5rem);
+}
+.zoro-mid__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.zoro-poster {
+  padding: 1.75rem 0 calc(var(--cut-steep) * 0.45);
+}
+.zoro-poster__bg {
+  position: absolute;
+  top: calc(-1 * var(--cut));
+  right: calc(-1 * var(--pad));
+  bottom: 0;
+  left: calc(-1 * var(--pad));
+  z-index: -1;
+  background-color: var(--tone-1);
+  clip-path: polygon(
+    0 calc(var(--cut) + 6px),
+    100% 18px,
+    100% calc(100% - var(--cut-steep) - 6px),
+    0 calc(100% - 6px)
+  );
+}
+.zoro-poster__sheet {
+  width: min(60vw, 15rem);
+  margin-left: 9%;
+  rotate: 4deg;
+}
+.zoro-poster__note {
+  max-width: 13rem;
+  margin-top: 1.5rem;
+  padding: 0.375rem 0.5rem;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+}
+.zoro-words__quote {
+  align-self: flex-end;
+  margin-top: calc(var(--cut-steep) * -0.5);
+}
+
+.zoro-facts {
+  padding: 1.25rem 0 2.25rem;
+}
+.zoro-facts__bg {
+  position: absolute;
+  inset: calc(-1 * var(--cut)) 0 0 0;
+  z-index: -1;
+  background: var(--ink);
+  clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%);
+}
+.zoro-facts__bounty {
+  font-size: clamp(1.5rem, 7vw, 5rem);
+}
+
+@media (min-width: 48rem) {
+  .zoro {
+    --steep-top: 7rem;
+    --steep-bottom: -1.5rem;
+    --sheet: 18rem;
+    --blade: 3.5px;
+  }
+  .zoro-poster__bg,
+  .zoro-blade--two-flat {
+    display: none;
+  }
+  /* The tone piece: clipped once by the two flat strokes, then by the steep one. */
+  .zoro-mid__clip {
+    position: absolute;
+    inset: calc(-1 * var(--cut)) 0 0 0;
+    z-index: -1;
+    display: block;
+    clip-path: polygon(
+      0 calc(var(--cut) + 6px),
+      100% 18px,
+      100% calc(100% - var(--cut) - 18px),
+      0 calc(100% - 6px)
+    );
+  }
+  .zoro-mid__shard {
+    position: absolute;
+    inset: 0;
+    background-color: var(--tone-1);
+    clip-path: polygon(
+      calc(50% + var(--steep-top) + 8px) 0,
+      100% 0,
+      100% 100%,
+      calc(50% - var(--steep-bottom) + 8px) 100%
+    );
+  }
+  .zoro-blade--two {
+    top: calc(-1 * var(--cut));
+    bottom: 0;
+    left: calc(50% - var(--steep-bottom) - 6px);
+    display: block;
+    width: calc(var(--steep-top) + var(--steep-bottom) + 12px);
+    clip-path: polygon(
+      calc(100% - 6px) 0,
+      calc(45% + var(--blade)) 55%,
+      6px 100%,
+      calc(45% - var(--blade)) 55%
+    );
+  }
+  .zoro-mid {
+    padding-bottom: calc(var(--cut) + 3rem);
+  }
+  .zoro-mid__grid {
+    grid-template-columns:
+      calc(50% - var(--steep-bottom) - 1.5rem)
+      minmax(0, 1fr)
+      minmax(0, var(--sheet));
+    align-items: start;
+    padding-top: 2.5rem;
+  }
+  .zoro-words {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  .zoro-poster {
+    grid-row: 1;
+    grid-column: 3;
+    padding: 0;
+  }
+  .zoro-poster__sheet {
+    width: auto;
+    margin-left: 0;
+    rotate: 5deg;
+  }
+  .zoro-poster__note {
+    margin-top: 2rem;
+    margin-left: 1rem;
+  }
+  .zoro-words__quote {
+    align-self: flex-start;
+    margin-top: 0;
+    margin-left: 2.5rem;
+  }
+  .zoro-name__last {
+    margin-left: 1.1em;
+  }
+}
+@media (min-width: 64rem) {
+  .zoro {
+    --steep-top: 9rem;
+    --steep-bottom: 1rem;
+    --sheet: 21rem;
+  }
+  /* The poster climbs out of its piece and over the first cut; the name keeps clear of it. */
+  .zoro-name__title {
+    font-size: min(9.2vw, 7rem);
+  }
+  .zoro-poster {
+    margin-top: -11rem;
+  }
+  .zoro-words {
+    gap: 2rem;
+    padding-top: 1.5rem;
+  }
+}
+
+@keyframes zoro-stroke-flat {
+  from {
+    clip-path: polygon(100% 8px, 100% 8px, 100% 8px, 100% 8px);
+  }
+}
+@keyframes zoro-stroke-steep {
+  from {
+    clip-path: polygon(
+      calc(100% - 6px) 0,
+      calc(100% - 6px) 0,
+      calc(100% - 6px) 0,
+      calc(100% - 6px) 0
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Brook: a black page and one stave. `--sp` is the space between two stave lines.
+   ------------------------------------------------------------------------------------------ */
+.brook {
+  --sp: 0.6875rem;
+  --notes-at: 62%;
+  padding-bottom: clamp(3rem, 9vw, 6rem);
+}
+.brook-stave {
+  position: relative;
+  height: calc(var(--sp) * 4 + 2px);
+  margin-top: clamp(5.5rem, 15vw, 9rem);
+}
+.brook-stave__line {
+  position: absolute;
+  top: calc(var(--sp) * var(--i));
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--tone-3);
+  transform-origin: 0 50%;
+}
+.brook-stave__bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ink);
+}
+.brook-stave__bar--open {
+  left: 7%;
+}
+.brook-stave__bar--close {
+  left: calc(var(--notes-at) - 5%);
+}
+.brook-stave__bar--end {
+  right: 4%;
+  width: 11px;
+  border-right: 5px solid var(--ink);
+  border-left: 2px solid var(--ink);
+  background: none;
+}
+/* A multiple rest: one heavy bar across the middle line, capped at both ends, counted above. */
+.brook-stave__rest {
+  position: absolute;
+  top: var(--sp);
+  right: calc(100% - var(--notes-at) + 10%);
+  left: 12%;
+  height: calc(var(--sp) * 2 + 2px);
+  border-right: 3px solid var(--ink);
+  border-left: 3px solid var(--ink);
+}
+.brook-stave__rest::before {
+  position: absolute;
+  top: calc(50% - var(--sp) * 0.3);
+  right: 0;
+  left: 0;
+  height: calc(var(--sp) * 0.6);
+  background: var(--ink);
+  content: "";
+}
+.brook-stave__count {
+  position: absolute;
+  bottom: calc(100% + var(--sp) * 1.6);
+  left: 50%;
+  color: var(--spot);
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  line-height: 1;
+  translate: -50% 0;
+}
+.brook-stave__notes {
+  position: absolute;
+  top: 0;
+  right: 9%;
+  bottom: 0;
+  left: var(--notes-at);
+}
+.brook-stave__note {
+  position: absolute;
+  top: calc(var(--sp) * var(--p) - var(--sp) * 0.45 + 1px);
+  left: calc(var(--n) * 26%);
+  width: calc(var(--sp) * 1.3);
+  height: calc(var(--sp) * 0.9);
+}
+.brook-stave__note::before {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  content: "";
+  rotate: -22deg;
+}
+.brook-stave__note::after {
+  position: absolute;
+  right: 0;
+  bottom: 55%;
+  width: 2px;
+  height: calc(var(--sp) * 3.2);
+  background: var(--ink);
+  content: "";
+}
+.brook-laugh {
+  margin: 1.25rem 0 0 var(--notes-at);
+  font-size: clamp(1.25rem, 3.2vw, 2.25rem);
+  line-height: 1.1;
+}
+
+.brook-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  margin-top: clamp(4.5rem, 13vw, 9rem);
+}
+.brook-name__title {
+  font-size: clamp(4rem, 19vw, 12rem);
+  line-height: 0.85;
+  letter-spacing: 0.03em;
+}
+.brook-poster {
+  justify-self: end;
+  width: min(44vw, 10.5rem);
+  margin-right: 4%;
+  rotate: 3deg;
+}
+.brook-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--tone-2);
+}
+.brook-facts__item {
+  display: grid;
+  gap: 0.375rem;
+  align-content: start;
+}
+
+@media (min-width: 48rem) {
+  .brook {
+    --sp: 0.8125rem;
+    --notes-at: 70%;
+  }
+  .brook-body {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 2.5rem;
+  }
+  .brook-name__title {
+    font-size: min(12.5vw, 9.5rem);
+  }
+  .brook-name {
+    grid-row: 1;
+    grid-column: 1 / span 8;
+    align-self: end;
+  }
+  .brook-words {
+    grid-row: 2;
+    grid-column: 1 / span 7;
+  }
+  .brook-poster {
+    grid-row: 1 / span 2;
+    grid-column: 9 / -1;
+    align-self: end;
+    width: min(100%, 15rem);
+    margin-right: 0;
+  }
+  .brook-facts {
+    grid-row: 3;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    column-gap: clamp(2rem, 6vw, 5rem);
+    margin-top: 2.5rem;
+  }
+}
+
+@keyframes brook-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes brook-sound {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Chopper: a big quiet sheet, a very small doctor, and one loud number.
+   ------------------------------------------------------------------------------------------ */
+.chopper {
+  padding-bottom: 1.5rem;
+}
+.chopper-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 3rem;
+  padding-top: clamp(3rem, 15vw, 6rem);
+}
+.chopper-figure {
+  display: grid;
+  grid-template-columns: minmax(0, auto) 6.5rem;
+  column-gap: 0.25rem;
+  row-gap: 0.875rem;
+  align-items: start;
+  justify-self: end;
+  margin-right: 3%;
+}
+.chopper-figure__quote {
+  grid-row: 1;
+  grid-column: 1;
+  max-width: 11.5rem;
+  margin-top: 0.5rem;
+}
+.chopper-figure__poster {
+  grid-row: 1;
+  grid-column: 2;
+  rotate: -4deg;
+}
+.chopper-figure__name {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  justify-self: end;
+  width: 11rem;
+}
+.chopper-bounty {
+  display: grid;
+  gap: 0.5rem;
+  order: 2;
+  margin-top: clamp(1rem, 12vw, 5rem);
+}
+.chopper-bounty__sum {
+  padding-bottom: 0.16em;
+  font-size: clamp(4.25rem, 22.5vw, 17rem);
+  line-height: 0.82;
+  white-space: nowrap;
+  text-shadow: 0.035em 0.035em 0 var(--ink);
+}
+.chopper-bounty__berry {
+  margin-right: 0.15em;
+  color: var(--ink);
+  font-size: 0.3em;
+  text-shadow: none;
+  vertical-align: 1.35em;
+}
+.chopper-words {
+  order: 3;
+}
+
+@media (min-width: 48rem) {
+  .chopper-field {
+    grid-template-rows: minmax(24rem, auto) auto;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 2rem;
+    padding-top: 3.5rem;
+  }
+  .chopper-figure {
+    grid-template-columns: minmax(0, auto) 8.5rem;
+    grid-row: 1;
+    grid-column: 6 / -1;
+    align-self: center;
+    margin-right: 9%;
+  }
+  .chopper-figure__name {
+    width: 13rem;
+  }
+  .chopper-words {
+    grid-row: 1;
+    grid-column: 1 / span 4;
+    align-self: start;
+    order: 0;
+  }
+  .chopper-bounty {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    order: 0;
+    margin-top: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Motion. Each of these plays once on arrival, eases out and stops dead. It is gated on the
+   `motion` class the layout sets before paint, exactly as app/motion.css gates its reveals, so
+   without the class (reduced motion) every stroke and line is simply there.
+   ------------------------------------------------------------------------------------------ */
+html.motion .zoro-blade--one,
+html.motion .zoro-blade--three,
+html.motion .zoro-blade--two-flat {
+  animation: zoro-stroke-flat 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s both;
+}
+html.motion .zoro-blade--two {
+  animation: zoro-stroke-steep 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+}
+html.motion .zoro-blade--two-flat {
+  animation-delay: 0.3s;
+}
+html.motion .zoro-blade--three {
+  animation-delay: 0.45s;
+}
+html.motion .brook-stave__line {
+  animation: brook-draw 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * 80ms) both;
+}
+html.motion .brook-stave__bar,
+html.motion .brook-stave__rest,
+html.motion .brook-stave__notes {
+  animation: brook-sound 0.5s ease-out 0.9s both;
+}
+html.motion .brook-stave__notes {
+  animation-delay: 1.3s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .zoro-blade,
+  .brook-stave__line,
+  .brook-stave__bar,
+  .brook-stave__rest,
+  .brook-stave__notes {
+    animation: none !important;
+  }
+}

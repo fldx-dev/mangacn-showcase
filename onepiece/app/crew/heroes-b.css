@@ -1,0 +1,874 @@
+/* Heroes for Robin, Franky and Jinbe (components/crew/hero-robin.tsx, hero-franky.tsx,
+   hero-jinbe.tsx). Unlayered, like crew.css, so every rule is namespaced by member, and nothing
+   here sets `display` on an element that also carries a Tailwind display utility. */
+
+/* ---------------------------------------------------------------------------------------------
+   Robin: a Poneglyph and a scholar's margin. `--rows` is how many rows of marks the stone shows,
+   `--read-row` the one she has underlined; both lines that leave it are placed from those two.
+   ------------------------------------------------------------------------------------------ */
+.robin {
+  --rows: 9;
+  --read-row: 2;
+  --read-at: calc((var(--read-row) + 0.97) / var(--rows) * 100%);
+  --pad: 0rem;
+  --rule: 2px;
+  padding-bottom: 1.5rem;
+}
+.robin-sheet {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(40vw, 10rem);
+  column-gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+/* The stone: one dark mass behind the name and the marks, chipped at the corners. */
+.robin-stone {
+  grid-row: 1 / 3;
+  grid-column: 1 / -1;
+  margin: 0 -1rem;
+  background: var(--ink);
+  clip-path: polygon(
+    0 9px,
+    7px 0,
+    61% 0,
+    63% 4px,
+    calc(100% - 15px) 0,
+    100% 12px,
+    100% calc(100% - 6px),
+    calc(100% - 9px) 100%,
+    38% 100%,
+    36% calc(100% - 5px),
+    11px 100%,
+    0 calc(100% - 13px)
+  );
+}
+.robin-name {
+  position: relative;
+  grid-row: 1;
+  grid-column: 1 / -1;
+  padding: 1.75rem var(--pad) 1.25rem;
+}
+.robin-name__title {
+  font-size: clamp(2rem, 10.6vw, 4.75rem);
+  line-height: 0.95;
+  white-space: nowrap;
+}
+.robin-glyphs {
+  position: relative;
+  grid-row: 2;
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / var(--rows);
+  margin: 0 var(--pad) 1.25rem;
+}
+.robin-glyphs__field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.robin-glyphs__read {
+  position: absolute;
+  top: var(--read-at);
+  left: 0.5%;
+  width: 43%;
+  height: var(--rule);
+  background: var(--spot);
+  transform-origin: 0 50%;
+}
+/* On a narrow page the line leaves by the gutter and runs down to the note under the stone. */
+.robin-glyphs__lead {
+  position: absolute;
+  top: var(--read-at);
+  bottom: -4.25rem;
+  left: -0.5rem;
+  width: calc(0.5rem + 0.5%);
+  border-top: var(--rule) solid var(--spot);
+  border-left: var(--rule) solid var(--spot);
+}
+.robin-quote {
+  grid-row: 3;
+  grid-column: 1;
+  margin-top: 1.75rem;
+  color: var(--spot);
+  font-size: clamp(1.75rem, 7.6vw, 2.5rem);
+  line-height: 1.05;
+}
+.robin-about {
+  grid-row: 4;
+  grid-column: 1;
+  margin-top: 1.25rem;
+}
+.robin-poster {
+  z-index: 1;
+  grid-row: 3 / 5;
+  grid-column: 2;
+  margin-top: -3.25rem;
+}
+.robin-poster__sheet {
+  rotate: 3deg;
+}
+.robin-poster__note {
+  margin-top: 1.25rem;
+}
+.robin-hand {
+  position: absolute;
+  width: 1.75rem;
+  pointer-events: none;
+}
+/* Drawn reaching in from the right; turned a quarter to reach down from the top edge. */
+.robin-hand--top {
+  top: -0.7rem;
+  left: 22%;
+  rotate: -90deg;
+}
+.robin-hand--side {
+  display: none;
+}
+.robin-facts {
+  display: grid;
+  grid-row: 5;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--ink);
+}
+.robin-facts__item {
+  display: grid;
+  gap: 0.375rem;
+  align-content: start;
+}
+
+@media (min-width: 40rem) {
+  .robin {
+    --rows: 7;
+    --rule: 3px;
+  }
+  .robin-sheet {
+    grid-template-columns: minmax(0, 1fr) 13rem;
+    column-gap: 2.5rem;
+  }
+  .robin-stone {
+    margin: 0 -0.75rem;
+  }
+  .robin-poster {
+    margin-top: -4.5rem;
+    margin-right: 1rem;
+  }
+  .robin-facts {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    column-gap: clamp(2rem, 6vw, 4rem);
+  }
+}
+
+@media (min-width: 64rem) {
+  .robin {
+    --rows: 9;
+    --pad: 1.75rem;
+    padding-bottom: 2.5rem;
+  }
+  .robin-sheet {
+    grid-template-rows: auto auto auto;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .robin-stone {
+    grid-column: 5 / -1;
+    margin: 0;
+  }
+  .robin-name,
+  .robin-glyphs {
+    grid-column: 5 / -1;
+  }
+  .robin-name {
+    padding-top: 2rem;
+  }
+  .robin-name__title {
+    font-size: min(6.9vw, 5.1rem);
+  }
+  .robin-glyphs {
+    margin-bottom: var(--pad);
+  }
+  .robin-glyphs__lead {
+    display: none;
+  }
+  .robin-about {
+    grid-row: 1;
+    grid-column: 1 / 5;
+    align-self: start;
+    margin-top: 2rem;
+  }
+  /* The note sits level with the underlined row, and its own line runs across to meet it. */
+  .robin-quote {
+    position: relative;
+    top: calc((100% - var(--pad)) * (var(--read-row) + 0.97) / var(--rows));
+    grid-row: 2;
+    grid-column: 1 / 5;
+    align-self: start;
+    margin-top: 0;
+    padding-right: 0.75rem;
+    font-size: 2.5rem;
+    text-align: right;
+    translate: 0 -50%;
+  }
+  .robin-quote::after {
+    position: absolute;
+    top: calc(50% - var(--rule) / 2);
+    left: 100%;
+    width: calc(1.5rem + var(--pad) + 0.5%);
+    height: var(--rule);
+    background: var(--spot);
+    content: "";
+  }
+  .robin-poster {
+    grid-row: 2 / 4;
+    grid-column: 2 / 6;
+    align-self: end;
+    justify-self: end;
+    width: 14rem;
+    margin-top: 0;
+    margin-right: 1rem;
+  }
+  .robin-poster__sheet {
+    rotate: -3deg;
+  }
+  .robin-hand--top {
+    display: none;
+  }
+  .robin-hand--side {
+    top: 14%;
+    right: -0.15rem;
+    display: block;
+    width: 2.125rem;
+  }
+  .robin-facts {
+    grid-row: 3;
+    grid-column: 6 / -1;
+    column-gap: 2rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@keyframes robin-read {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes robin-appear {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes robin-reach {
+  from {
+    opacity: 0;
+    translate: 0.75rem 0;
+  }
+}
+@keyframes robin-reach-down {
+  from {
+    opacity: 0;
+    translate: 0 -0.75rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Motion. Once on arrival, eased out, no overshoot, and only when the layout has set `motion`.
+   ------------------------------------------------------------------------------------------ */
+html.motion .robin-glyphs__read {
+  animation: robin-read 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s both;
+}
+html.motion .robin-glyphs__lead,
+html.motion .robin-quote::after {
+  animation: robin-appear 0.4s ease-out 0.15s both;
+}
+html.motion .robin-hand--side {
+  animation: robin-reach 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
+}
+html.motion .robin-hand--top {
+  animation: robin-reach-down 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .robin-glyphs__read,
+  .robin-glyphs__lead,
+  .robin-quote::after,
+  .robin-hand {
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Franky: a working drawing. `--gutter` is the border strip that carries the zone marks, `--in`
+   the plate's own padding. The plate carries the theme's `dark` class, so the drawing is white line
+   on ink inside a paper border; the only thing off the square is the shout.
+   ------------------------------------------------------------------------------------------ */
+.franky {
+  --gutter: 0.875rem;
+  --in: 0.875rem;
+  --frame: 3px;
+  padding: 1.25rem 0.5rem 1.5rem;
+}
+.franky-sheet {
+  position: relative;
+  padding: var(--gutter);
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+.franky-zones {
+  position: absolute;
+  display: flex;
+  color: var(--tone-4);
+  font-size: 0.5rem;
+  line-height: 1;
+}
+.franky-zones > span {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+.franky-zones > span:nth-child(n + 5) {
+  display: none;
+}
+.franky-zones--top,
+.franky-zones--bottom {
+  right: var(--gutter);
+  left: var(--gutter);
+  height: var(--gutter);
+}
+.franky-zones--top {
+  top: 0;
+}
+.franky-zones--bottom {
+  bottom: 0;
+}
+.franky-zones--left,
+.franky-zones--right {
+  top: var(--gutter);
+  bottom: var(--gutter);
+  flex-direction: column;
+  width: var(--gutter);
+}
+.franky-zones--left {
+  left: 0;
+}
+.franky-zones--right {
+  right: 0;
+}
+.franky-zones--top > span + span,
+.franky-zones--bottom > span + span {
+  border-left: 1.5px solid var(--ink);
+}
+.franky-zones--left > span + span,
+.franky-zones--right > span + span {
+  border-top: 1.5px solid var(--ink);
+}
+
+/* The grid: hard one pixel rules, a heavier one every fifth square. */
+.franky-plate {
+  position: relative;
+  display: grid;
+  grid-template-columns: min(44vw, 11rem) minmax(0, 1fr);
+  column-gap: 0.75rem;
+  padding: var(--in);
+  border: var(--frame) solid var(--ink);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--tone-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--tone-2) 1px, transparent 1px),
+    linear-gradient(var(--tone-1) 1px, transparent 1px),
+    linear-gradient(90deg, var(--tone-1) 1px, transparent 1px);
+  background-size:
+    5rem 5rem,
+    5rem 5rem,
+    1rem 1rem,
+    1rem 1rem;
+}
+.franky-back {
+  grid-row: 1;
+  grid-column: 1 / -1;
+}
+.franky-title {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  margin-top: 1.25rem;
+}
+.franky-title__part {
+  width: fit-content;
+  max-width: 100%;
+}
+.franky-title__name {
+  font-size: clamp(2.25rem, 14.2vw, 7.75rem);
+  line-height: 0.86;
+  white-space: nowrap;
+}
+/* The dimension under the name: two arrows out to the extension lines, the figure between. */
+.franky-dim {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: clamp(0.9375rem, 4.6vw, 1.875rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+.franky-dim::before,
+.franky-dim::after {
+  position: absolute;
+  bottom: calc(50% - 0.5rem);
+  width: 1.5px;
+  height: 1.5rem;
+  background: var(--ink);
+  content: "";
+}
+.franky-dim::before {
+  left: 0;
+}
+.franky-dim::after {
+  right: 0;
+}
+.franky-dim__line {
+  position: relative;
+  flex: 1;
+  min-width: 1rem;
+  height: 2px;
+  background: var(--ink);
+}
+.franky-dim__line::before {
+  position: absolute;
+  top: -4px;
+  width: 13px;
+  height: 10px;
+  background: var(--ink);
+  content: "";
+}
+.franky-dim__line--from {
+  transform-origin: 100% 50%;
+}
+.franky-dim__line--from::before {
+  left: 0;
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+}
+.franky-dim__line--to {
+  transform-origin: 0 50%;
+}
+.franky-dim__line--to::before {
+  right: 0;
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+}
+
+.franky-fig {
+  grid-row: 3;
+  grid-column: 1;
+  margin: 2.25rem 0 0 0.75rem;
+}
+/* Centre lines through the poster, dashed, running a little past it on every side. */
+.franky-fig__axis {
+  position: absolute;
+  z-index: -1;
+}
+.franky-fig__axis--across {
+  top: 50%;
+  right: -1.25rem;
+  left: -1.25rem;
+  border-top: 1.5px dashed var(--ink);
+}
+.franky-fig__axis--down {
+  top: -1.25rem;
+  bottom: -1.25rem;
+  left: 50%;
+  border-left: 1.5px dashed var(--ink);
+}
+.franky-shout {
+  position: relative;
+  display: flex;
+  grid-row: 3;
+  grid-column: 2;
+  align-items: center;
+  margin-top: 2.25rem;
+}
+.franky-star {
+  display: block;
+  width: min(100%, 17rem);
+  margin: 0 auto;
+}
+/* Hung from the foot of the row, so it crosses the poster by the same amount whatever its height. */
+.franky-shout__word {
+  position: absolute;
+  right: 0;
+  bottom: -3.75rem;
+  z-index: 2;
+  white-space: nowrap;
+}
+.franky-shout__sfx {
+  font-size: clamp(2.5rem, 13.5vw, 5.75rem);
+}
+.franky-about {
+  grid-row: 4;
+  grid-column: 1 / -1;
+  max-width: 44ch;
+  margin-top: 5.5rem;
+}
+/* The title block: ruled cells flush against the plate's own frame. */
+.franky-block {
+  display: grid;
+  grid-row: 5;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 1.75rem calc(-1 * var(--in)) calc(-1 * var(--in));
+  border-top: var(--frame) solid var(--ink);
+  background: var(--paper);
+}
+.franky-block__cell {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  padding: 0.75rem var(--in) 0.875rem;
+}
+.franky-block__cell + .franky-block__cell {
+  border-top: 1.5px solid var(--ink);
+}
+.franky-fuel__gauge {
+  flex: none;
+  width: 3.75rem;
+}
+
+@media (min-width: 40rem) {
+  .franky {
+    --gutter: 1.25rem;
+    --in: 1.5rem;
+    padding: 2rem 1.5rem;
+  }
+  .franky-zones {
+    font-size: 0.625rem;
+  }
+  .franky-zones--top > span:nth-child(n + 5),
+  .franky-zones--bottom > span:nth-child(n + 5) {
+    display: flex;
+  }
+  .franky-plate {
+    grid-template-columns: 14rem minmax(0, 1fr);
+    column-gap: 1.5rem;
+  }
+  .franky-fig {
+    margin-left: 1.25rem;
+  }
+  .franky-shout__word {
+    right: 2%;
+    bottom: -5rem;
+  }
+  .franky-about {
+    margin-top: 7.25rem;
+  }
+  .franky-block {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .franky-block__cell--dream {
+    grid-column: 1 / -1;
+  }
+  .franky-block__cell + .franky-block__cell:last-child {
+    border-left: 1.5px solid var(--ink);
+  }
+}
+
+@media (min-width: 64rem) {
+  .franky {
+    --in: 2rem;
+  }
+  .franky-plate {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .franky-title {
+    grid-column: 1 / 9;
+    margin-top: 1.5rem;
+  }
+  .franky-title__name {
+    font-size: min(10vw, 7.75rem);
+  }
+  .franky-fig {
+    grid-row: 2 / 4;
+    grid-column: 9 / -1;
+    align-self: start;
+    margin: 1.5rem 1.25rem 0;
+  }
+  .franky-about {
+    grid-row: 3;
+    grid-column: 1 / 5;
+    align-self: end;
+    max-width: 18.5rem;
+    margin-top: 3rem;
+  }
+  .franky-shout {
+    grid-row: 3;
+    grid-column: 5 / 9;
+    margin-top: 1.5rem;
+  }
+  .franky-star {
+    width: 15rem;
+  }
+  .franky-shout__word {
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    translate: -50% -50%;
+  }
+  .franky-shout__sfx {
+    font-size: min(5.6vw, 5rem);
+  }
+  .franky-block {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    margin-top: 2.5rem;
+  }
+  .franky-block__cell--dream {
+    grid-column: auto;
+  }
+  .franky-block__cell + .franky-block__cell {
+    border-top: 0;
+    border-left: 1.5px solid var(--ink);
+  }
+}
+
+@keyframes franky-rule {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes franky-shout {
+  from {
+    opacity: 0;
+    scale: 1.3;
+  }
+}
+html.motion .franky-dim__line {
+  animation: franky-rule 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s both;
+}
+html.motion .franky-shout__word {
+  animation: franky-shout 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) 0.7s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .franky-dim__line,
+  .franky-shout__word {
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Jinbe: the sea in section. `--cx` and `--cy` are the point of the strike, measured from the
+   top left of the water: the wheel, the rings and the poster are all centred on it. `--s` scales
+   the drawing, `--pw` is the poster's width and `--sink` how far down the words begin.
+   ------------------------------------------------------------------------------------------ */
+.jinbe {
+  --s: 0.72;
+  --pw: 9.4rem;
+  --cx: 50%;
+  --cy: 14rem;
+  --sink: 27rem;
+}
+.jinbe-sky {
+  padding-bottom: 2.5rem;
+}
+.jinbe-ship {
+  position: absolute;
+  right: 12%;
+  bottom: calc(-2.5rem - 2px);
+  width: 4.25rem;
+  height: 4.25rem;
+}
+.jinbe-sea {
+  background: var(--paper);
+}
+/* The waterline: a swell cut into the sky, in the tone of the first band of water. */
+.jinbe-surface {
+  position: absolute;
+  bottom: calc(100% - 0.5px);
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 10px;
+}
+/* Light gives out in two flat steps under the surface. */
+.jinbe-shallows {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -2;
+  height: 2.25rem;
+  background: var(--tone-1);
+  border-top: 0.625rem solid var(--tone-2);
+}
+.jinbe-water {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+}
+/* The rings of the strike: one hard-edged circle each, drawn as backgrounds so nothing is wider
+   than the water. `--o` is the centre, `--k` the ink they are drawn in. */
+.jinbe-rings {
+  --o: circle at var(--cx) var(--cy);
+  --k: var(--tone-3);
+  position: absolute;
+  inset: 0;
+  transform-origin: var(--cx) var(--cy);
+  background-image:
+    radial-gradient(var(--o), transparent calc(299px * var(--s)), var(--k) calc(299.5px * var(--s)), var(--k) calc(301.5px * var(--s)), transparent calc(302px * var(--s))),
+    radial-gradient(var(--o), transparent calc(371px * var(--s)), var(--k) calc(371.5px * var(--s)), var(--k) calc(373.5px * var(--s)), transparent calc(374px * var(--s))),
+    radial-gradient(var(--o), transparent calc(467px * var(--s)), color-mix(in oklab, var(--k) 80%, transparent) calc(467.5px * var(--s)), color-mix(in oklab, var(--k) 80%, transparent) calc(469.5px * var(--s)), transparent calc(470px * var(--s))),
+    radial-gradient(var(--o), transparent calc(589px * var(--s)), color-mix(in oklab, var(--k) 62%, transparent) calc(589.5px * var(--s)), color-mix(in oklab, var(--k) 62%, transparent) calc(591px * var(--s)), transparent calc(591.5px * var(--s))),
+    radial-gradient(var(--o), transparent calc(739px * var(--s)), color-mix(in oklab, var(--k) 48%, transparent) calc(739.5px * var(--s)), color-mix(in oklab, var(--k) 48%, transparent) calc(741px * var(--s)), transparent calc(741.5px * var(--s))),
+    radial-gradient(var(--o), transparent calc(919px * var(--s)), color-mix(in oklab, var(--k) 38%, transparent) calc(919.5px * var(--s)), color-mix(in oklab, var(--k) 38%, transparent) calc(921px * var(--s)), transparent calc(921.5px * var(--s))),
+    radial-gradient(var(--o), transparent calc(1129px * var(--s)), color-mix(in oklab, var(--k) 30%, transparent) calc(1129.5px * var(--s)), color-mix(in oklab, var(--k) 30%, transparent) calc(1131px * var(--s)), transparent calc(1131.5px * var(--s)));
+}
+.jinbe-strike {
+  position: absolute;
+  top: var(--cy);
+  left: var(--cx);
+  overflow: visible;
+  scale: var(--s);
+  transform-origin: 0 0;
+}
+.jinbe-poster {
+  position: absolute;
+  top: var(--cy);
+  left: var(--cx);
+  z-index: 1;
+  width: var(--pw);
+  translate: -50% -50%;
+}
+.jinbe-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 2rem;
+  padding-top: var(--sink);
+}
+.jinbe-name__title {
+  font-size: clamp(3.5rem, 20vw, 11rem);
+  line-height: 0.86;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.jinbe-words__quote {
+  font-size: clamp(1.5rem, 5.6vw, 2.25rem);
+  line-height: 1.15;
+}
+.jinbe-count {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--tone-2);
+}
+.jinbe-count__item {
+  display: grid;
+  gap: 0.375rem;
+  align-content: start;
+}
+.jinbe-count__tally {
+  flex: none;
+  width: auto;
+  height: 1.375rem;
+}
+.jinbe-floor {
+  position: relative;
+  margin-top: 3rem;
+}
+.jinbe-floor__mark {
+  padding-bottom: 0.625rem;
+  color: var(--tone-4);
+}
+/* The sea floor, hatched underneath the way a drawing marks solid ground. */
+.jinbe-floor__bed {
+  display: block;
+  height: 0.875rem;
+  border-top: 2px solid var(--ink);
+  background: repeating-linear-gradient(
+    135deg,
+    var(--tone-3) 0 1.5px,
+    transparent 1.5px 9px
+  );
+}
+
+@media (max-width: 23.4rem) {
+  .jinbe {
+    --s: 0.62;
+    --pw: 8.1rem;
+    --cy: 12.5rem;
+    --sink: 24rem;
+  }
+}
+@media (min-width: 40rem) {
+  .jinbe {
+    --s: 1;
+    --pw: 13rem;
+    --cy: 18.75rem;
+    --sink: 36.5rem;
+  }
+  .jinbe-ship {
+    width: 5rem;
+    height: 5rem;
+  }
+  .jinbe-count {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    column-gap: clamp(2rem, 6vw, 5rem);
+  }
+}
+
+@media (min-width: 64rem) {
+  .jinbe {
+    --cx: calc(50% + min(36rem, 50%) - 17.5rem);
+    --cy: 19.25rem;
+    --sink: 4.25rem;
+  }
+  .jinbe-ship {
+    right: 15rem;
+  }
+  .jinbe-body {
+    grid-template-columns: minmax(0, 1fr) 33rem;
+  }
+  /* Holds the two rows of words open to the height of the wheel beside them. */
+  .jinbe-body::before {
+    grid-row: 1 / 3;
+    grid-column: 2;
+    min-height: 31.5rem;
+    content: "";
+  }
+  .jinbe-name,
+  .jinbe-words {
+    grid-column: 1;
+  }
+  .jinbe-name {
+    grid-row: 1;
+  }
+  .jinbe-words {
+    grid-row: 2;
+  }
+  .jinbe-name__title {
+    font-size: min(9.4vw, 8rem);
+  }
+  .jinbe-count {
+    grid-row: 3;
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+  }
+}
+
+@keyframes jinbe-ring {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+html.motion .jinbe-rings {
+  animation: jinbe-ring 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .jinbe-rings {
+    animation: none !important;
+  }
+}

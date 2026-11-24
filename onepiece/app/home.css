@@ -1,0 +1,668 @@
+/* The home page's two set pieces: the bounty board (#crew) and the manga shelf (#numbers).
+   Unlayered, like motion.css, so it sits over the theme's utilities. */
+
+/* The theme's light values, resolved once on the root, so a sheet of paper can stay paper inside
+   the dark crew band without restating any colour. */
+:root {
+  --sheet-ink: var(--ink);
+  --sheet-paper: var(--paper);
+  --sheet-spot: var(--spot);
+  --sheet-spot-foreground: var(--spot-foreground);
+  --sheet-tone-1: var(--tone-1);
+  --sheet-tone-2: var(--tone-2);
+  --sheet-tone-3: var(--tone-3);
+  --sheet-tone-4: var(--tone-4);
+}
+.wall-paper {
+  --ink: var(--sheet-ink);
+  --paper: var(--sheet-paper);
+  --spot: var(--sheet-spot);
+  --spot-foreground: var(--sheet-spot-foreground);
+  --tone-1: var(--sheet-tone-1);
+  --tone-2: var(--sheet-tone-2);
+  --tone-3: var(--sheet-tone-3);
+  --tone-4: var(--sheet-tone-4);
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------------------------------------
+   The bounty board
+   ------------------------------------------------------------------------------------------ */
+
+.wall {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 30rem;
+  margin-inline: auto;
+  container-type: inline-size;
+}
+
+/* Phones: two columns that never line up, the captain across both. */
+.wall__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.25rem;
+  row-gap: 2.25rem;
+  align-items: start;
+  padding-bottom: 1rem;
+}
+.wall__slot {
+  position: relative;
+  min-width: 0;
+  container-type: inline-size;
+}
+.wall__slot:nth-child(odd) {
+  margin-top: 3rem;
+}
+.wall__slot[data-captain] {
+  grid-column: 1 / -1;
+  width: 72%;
+  margin: 0 0 0 5%;
+}
+.wall__slot:hover,
+.wall__slot:focus-within {
+  z-index: 30;
+}
+
+/* One poster with its docket. It hangs crooked and straightens when picked. */
+.wall-card {
+  position: relative;
+  rotate: var(--sr, 0deg);
+  transition:
+    rotate 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    scale 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    translate 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (hover: hover) {
+  .wall-card:hover {
+    rotate: 0deg;
+    scale: 1.05;
+    translate: 0 -6px;
+  }
+}
+.wall-card:has(.wall-card__name:focus-visible) {
+  rotate: 0deg;
+  scale: 1.05;
+  translate: 0 -6px;
+  outline: 3px solid var(--spot);
+  outline-offset: 6px;
+}
+.wall-card:active {
+  scale: 0.98;
+}
+.wall-card__sheet {
+  position: relative;
+}
+
+/* The name is the link; its target is stretched over the whole poster and docket. */
+.wall-card__name {
+  /* The link box itself is a comfortable target, not only the stretched ::after. */
+  padding-block: 0.3rem;
+  margin-block: -0.3rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.8125rem, 7.6cqw, 1.5rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-wrap: balance;
+  outline: none;
+}
+.wall-card__name::after {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  content: "";
+}
+.wall-card__label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  margin-top: clamp(0.75rem, 7cqw, 1.25rem);
+  padding-left: 2cqw;
+}
+.wall-card__bounty {
+  font-family: var(--font-display);
+  font-size: clamp(0.6875rem, 6.3cqw, 1.25rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.wall-card__was {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* A red sticker over the figure the poster still prints. */
+.wall-stamp {
+  position: absolute;
+  right: -6%;
+  bottom: 7%;
+  z-index: 2;
+  padding: 0.4em 0.6em 0.35em;
+  text-align: center;
+  border: 2px solid var(--ink);
+  background: var(--spot);
+  color: var(--spot-foreground);
+  box-shadow: inset 0 0 0 2px var(--spot), inset 0 0 0 3px var(--spot-foreground);
+  font-family: var(--font-display);
+  font-size: clamp(0.625rem, 6.6cqw, 1rem);
+  line-height: 1.05;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: pre;
+  rotate: -9deg;
+}
+
+/* On a typeset poster the name is at the foot, so the sticker sits above it. */
+.wall-stamp[data-typeset] {
+  bottom: 23%;
+}
+
+/* Pins and tape. */
+.wall-pin {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  z-index: 3;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--sheet-ink);
+  border-radius: 50%;
+  background: var(--spot);
+  translate: -50% 0;
+}
+.wall-card[data-fix="single"] > .wall-pin {
+  left: 14%;
+}
+/* The pin that let go: still in the board, with the corner it tore off. */
+.wall__lost-pin {
+  position: absolute;
+  top: -5px;
+  right: 9%;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--sheet-ink);
+  border-radius: 50%;
+  background: var(--spot);
+}
+.wall__lost-pin::before {
+  position: absolute;
+  top: 3px;
+  left: -9px;
+  z-index: -1;
+  width: 22px;
+  height: 17px;
+  background: var(--sheet-paper);
+  clip-path: polygon(0 0, 100% 8%, 82% 55%, 55% 70%, 40% 100%, 12% 62%);
+  content: "";
+}
+.wall-tape {
+  position: absolute;
+  top: -0.6rem;
+  left: 50%;
+  z-index: 3;
+  width: clamp(3rem, 34cqw, 5.5rem);
+  height: 1.25rem;
+  background: var(--tone-3);
+  clip-path: polygon(0 0, 4% 20%, 0 40%, 4% 60%, 0 80%, 4% 100%, 96% 100%, 100% 80%, 96% 60%, 100% 40%, 96% 20%, 100% 0);
+  translate: -50% 0;
+  rotate: -3deg;
+}
+.wall-tape--left {
+  top: 0.1rem;
+  left: 0;
+  width: clamp(2.5rem, 26cqw, 4.5rem);
+  translate: -32% 0;
+  rotate: -42deg;
+}
+.wall-tape--right {
+  top: 0.1rem;
+  right: 0;
+  left: auto;
+  width: clamp(2.5rem, 26cqw, 4.5rem);
+  translate: 32% 0;
+  rotate: 42deg;
+}
+
+/* An old sheet left under the captain's: only on the walls where posters overlap. */
+.wall-scrap {
+  position: absolute;
+  z-index: 0;
+  display: none;
+  background: var(--tone-2);
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 86% 84%, 78% 76%, 61% 90%, 47% 81%, 30% 95%, 16% 84%, 0 92%);
+}
+.wall-scrap::before {
+  position: absolute;
+  inset: 9% 12% auto;
+  height: 10%;
+  background: var(--tone-1);
+  content: "";
+}
+.wall-scrap::after {
+  position: absolute;
+  inset: 26% 12% 34%;
+  background: var(--tone-1);
+  content: "";
+}
+
+/* The tally slip: the ten bounties added up. On a phone it takes the gap beside the last poster. */
+.wall__tally {
+  position: absolute;
+  right: 0;
+  bottom: 3rem;
+  width: 47%;
+  container-type: inline-size;
+}
+.wall-tally {
+  position: relative;
+  padding: 1.1rem 6cqw 0.9rem;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  rotate: 2deg;
+}
+.wall-tally__head {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.wall-tally__sum {
+  margin-top: 0.2rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(0.8125rem, 7.8cqw, 1.5rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.wall-tally__note {
+  margin-top: 0.5rem;
+  font-family: var(--font-dialogue);
+  font-size: 0.9375rem;
+  line-height: 1.25;
+  rotate: -1.5deg;
+}
+
+/* The middle wall: every poster placed by hand, in hundredths of the wall's width. */
+@media (min-width: 44rem) {
+  .wall {
+    max-width: none;
+  }
+  .wall__list {
+    position: relative;
+    display: block;
+    height: 156cqw;
+    padding: 0;
+  }
+  .wall__slot,
+  .wall__slot:nth-child(odd),
+  .wall__slot[data-captain] {
+    position: absolute;
+    top: calc(var(--my) * 1cqw);
+    left: calc(var(--mx) * 1cqw);
+    z-index: var(--mz);
+    width: calc(var(--mw) * 1cqw);
+    margin: 0;
+  }
+  .wall__slot:hover,
+  .wall__slot:focus-within {
+    z-index: 30;
+  }
+  .wall-card {
+    rotate: var(--mr);
+  }
+  .wall-card[data-fix="single"] {
+    transform-origin: 14% 2%;
+  }
+  .wall-scrap {
+    display: block;
+  }
+  .wall-scrap--a {
+    top: 1cqw;
+    left: 36cqw;
+    width: 16cqw;
+    height: 24cqw;
+    rotate: 7deg;
+  }
+  .wall__tally {
+    position: absolute;
+    top: 88cqw;
+    right: auto;
+    bottom: auto;
+    left: 4cqw;
+    width: 36cqw;
+  }
+}
+
+/* The wide wall. */
+@media (min-width: 64rem) {
+  /* Wider than the text column: the board runs past the heading on both sides. */
+  .wall {
+    width: auto;
+    margin-inline: calc((100% - min(100vw - 3rem, 80rem)) / 2);
+  }
+  .wall__list {
+    height: 70cqw;
+  }
+  .wall__slot,
+  .wall__slot:nth-child(odd),
+  .wall__slot[data-captain] {
+    top: calc(var(--ly) * 1cqw);
+    left: calc(var(--lx) * 1cqw);
+    z-index: var(--lz);
+    width: calc(var(--lw) * 1cqw);
+  }
+  .wall__slot:hover,
+  .wall__slot:focus-within {
+    z-index: 30;
+  }
+  .wall-card {
+    rotate: var(--lr);
+  }
+  .wall-scrap--a {
+    top: 1cqw;
+    left: 22cqw;
+    width: 9cqw;
+    height: 13.5cqw;
+    rotate: 9deg;
+  }
+  .wall__tally {
+    top: 54cqw;
+    left: 3cqw;
+    width: 21cqw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wall-card {
+    transition: none;
+  }
+  .wall-card:hover,
+  .wall-card:has(.wall-card__name:focus-visible) {
+    scale: none;
+    translate: none;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+   The manga shelf
+   ------------------------------------------------------------------------------------------ */
+
+.shelf {
+  --slab: 4rem;
+  --cols: 24;
+  --row: 6.25rem;
+  --board: 6px;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--slab) repeat(3, minmax(0, 1fr));
+}
+
+/* The rows of volumes. Each cell carries its own length of shelf board. */
+.shelf__rows {
+  display: flex;
+  flex-wrap: wrap;
+  grid-row: 1;
+  grid-column: 2 / -1;
+  min-width: 0;
+  border-top: var(--board) solid var(--ink);
+}
+.spine,
+.shelf__rest {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: var(--row);
+  padding-top: 0.75rem;
+  border-bottom: var(--board) solid var(--ink);
+}
+.spine {
+  flex: 0 0 calc(100% / var(--cols));
+  min-width: 0;
+}
+.spine__body {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% + 1.5px);
+  height: var(--h, 92%);
+  border: 1.5px solid var(--ink);
+  border-bottom: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.5rem, 0.9vw, 0.6875rem);
+  line-height: 1;
+  writing-mode: vertical-rl;
+}
+/* Four ways a spine is banded: head band, double band, foot block, plain. */
+.spine__body[data-band="0"] {
+  box-shadow: inset 0 0.5rem 0 var(--ink);
+}
+.spine__body[data-band="1"] {
+  box-shadow:
+    inset 0 0.25rem 0 var(--ink),
+    inset 0 0.5rem 0 var(--paper),
+    inset 0 0.625rem 0 var(--ink);
+}
+.spine__body[data-band="2"] {
+  box-shadow: inset 0 -0.875rem 0 var(--tone-3);
+}
+.spine__body.bg-ink {
+  box-shadow:
+    inset 0 0.375rem 0 var(--ink),
+    inset 0 0.5rem 0 var(--paper);
+}
+.spine__body.bg-spot {
+  box-shadow:
+    inset 0 0.5rem 0 var(--ink),
+    inset 0 -0.5rem 0 var(--ink);
+}
+
+/* What is left of the last row: one volume leaning on the rest, and space. */
+.shelf__rest {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.shelf__lean {
+  position: absolute;
+  bottom: 0;
+  left: calc(var(--row) * 0.17);
+  width: clamp(0.75rem, 1.5vw, 1.125rem);
+  height: 86%;
+  transform-origin: 100% 100%;
+  rotate: -11deg;
+}
+.shelf__note {
+  position: absolute;
+  right: 0.25rem;
+  bottom: 28%;
+  max-width: 5.5rem;
+  font-family: var(--font-dialogue);
+  font-size: 0.8125rem;
+  line-height: 1.15;
+  text-align: right;
+  rotate: -4deg;
+}
+
+/* The four facts: one list laid over the case, the debut on the bookend, the rest hung below. */
+.shelf__facts {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-template-columns: subgrid;
+  grid-row: 1 / span 4;
+  grid-column: 1 / -1;
+  pointer-events: none;
+}
+.shelf__debut {
+  grid-row: 1;
+  grid-column: 1;
+  padding: 0.75rem 0;
+  background: var(--ink);
+  color: var(--paper);
+  writing-mode: vertical-rl;
+}
+.shelf__debut dd {
+  padding-right: 0.125rem;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.shelf__debut dt {
+  padding-right: 0.4rem;
+  font-family: var(--font-dialogue);
+  font-size: 0.8125rem;
+  line-height: 1.1;
+}
+
+/* A tag on a string, tied to the bottom shelf. */
+.shelf__tag {
+  --drop: 1.5rem;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column-reverse;
+  grid-column: 1 / -1;
+  gap: 0.25rem;
+  width: 82%;
+  margin-top: var(--drop);
+  padding: 1.75rem 1rem 0.9rem;
+  transform-origin: 2rem 0;
+}
+.shelf__tag::before {
+  position: absolute;
+  bottom: calc(100% - 0.9rem);
+  left: 2rem;
+  width: 2px;
+  height: calc(var(--drop) + 0.9rem);
+  background: var(--ink);
+  content: "";
+}
+.shelf__tag::after {
+  position: absolute;
+  top: 0.55rem;
+  left: calc(2rem - 0.3rem);
+  width: calc(0.6rem + 2px);
+  height: calc(0.6rem + 2px);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  content: "";
+}
+.shelf__tag dd {
+  color: var(--spot);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.4vw, 4.25rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+.shelf__tag dt {
+  font-family: var(--font-dialogue);
+  font-size: 1rem;
+  line-height: 1.25;
+}
+.shelf__tag:nth-of-type(2) {
+  rotate: -1.5deg;
+}
+.shelf__tag:nth-of-type(3) {
+  --drop: 1.25rem;
+  justify-self: end;
+  rotate: 1.5deg;
+}
+.shelf__tag:nth-of-type(4) {
+  margin-left: 6%;
+  rotate: -1deg;
+}
+
+@media (min-width: 40rem) {
+  .shelf {
+    --slab: 5rem;
+    --cols: 40;
+    --row: 9rem;
+  }
+  .shelf__debut dd {
+    font-size: 3rem;
+  }
+  .shelf__debut dt {
+    font-size: 0.9375rem;
+  }
+  .shelf__tag,
+  .shelf__tag:nth-of-type(3),
+  .shelf__tag:nth-of-type(4) {
+    grid-row: 2;
+    width: auto;
+    margin-left: 0;
+    justify-self: stretch;
+  }
+  .shelf__tag:nth-of-type(2) {
+    --drop: 1.25rem;
+    grid-column: 1 / 3;
+    margin-right: 1.25rem;
+  }
+  .shelf__tag:nth-of-type(3) {
+    --drop: 3.25rem;
+    grid-column: 3;
+    margin-right: 1.25rem;
+  }
+  .shelf__tag:nth-of-type(4) {
+    --drop: 2rem;
+    grid-column: 4;
+  }
+}
+@media (min-width: 64rem) {
+  .shelf {
+    --slab: 6.5rem;
+    --cols: 60;
+    --row: 11.5rem;
+  }
+  .shelf__debut dd {
+    font-size: 4rem;
+  }
+  .shelf__debut dt {
+    font-size: 1.0625rem;
+  }
+  .shelf__tag {
+    padding: 2rem 1.5rem 1.1rem;
+  }
+  .shelf__tag dt {
+    font-size: 1.125rem;
+  }
+  .shelf__tag:nth-of-type(2),
+  .shelf__tag:nth-of-type(3) {
+    margin-right: 2.5rem;
+  }
+}
+
+/* Stocking: the bookend rises, the volumes drop onto the shelf in order, the tags are hung.
+   Only where `motion` is set, and only until ShelfStock marks the shelf. */
+html.motion .shelf__debut {
+  transition: clip-path 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html.motion .spine .spine__body,
+html.motion .shelf__rest > * {
+  transition:
+    opacity 0.2s ease-out calc(var(--i, 114) * 9ms + 0.2s),
+    translate 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 114) * 9ms + 0.2s);
+}
+html.motion .shelf__tag {
+  transition:
+    opacity 0.25s ease-out 0.9s,
+    translate 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) 0.9s;
+}
+html.motion .shelf:not(.is-stocked) .shelf__debut {
+  clip-path: inset(100% 0 0 0);
+}
+html.motion .shelf:not(.is-stocked) .spine .spine__body,
+html.motion .shelf:not(.is-stocked) .shelf__rest > * {
+  opacity: 0;
+  translate: 0 -1.25rem;
+}
+html.motion .shelf:not(.is-stocked) .shelf__tag {
+  opacity: 0;
+  translate: 0 -1rem;
+}

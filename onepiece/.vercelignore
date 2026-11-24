@@ -1,0 +1,7 @@
+# The artwork folders under public/ are git-ignored on purpose (see .gitignore), but the live
+# demo needs them. Because this file exists, `vercel deploy` uses it instead of .gitignore, so a
+# deploy from a machine that has the artwork uploads it.
+node_modules
+.next
+.shots
+tsconfig.tsbuildinfo
