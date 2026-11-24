@@ -1,0 +1,400 @@
+/* Site motion and interaction states. Unlayered on purpose: it sits over the theme's utilities. */
+
+/* Hidden until HomeMotion slams it in. `motion` is set on <html> before paint, and never under
+   reduced motion, so without it everything is simply visible. */
+html.motion [data-reveal] {
+  opacity: 0;
+}
+html.motion [data-wipe] {
+  clip-path: inset(-10% 100% -10% 0%);
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 50;
+  padding: 0.5rem 0.75rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  translate: 0 -200%;
+}
+.skip-link:focus-visible {
+  translate: 0 0;
+}
+
+/* Buttons are rubber: squashed under the pointer, stretched under the thumb. The squash is a
+   cut that eases out, with no overshoot: nothing wobbles after it lands. */
+@media (prefers-reduced-motion: no-preference) {
+  .rubber-link {
+    transition:
+      scale 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  [data-slot="button"] {
+    transition-duration: 0.2s;
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @media (hover: hover) {
+    [data-slot="button"]:hover,
+    .rubber-link:hover {
+      scale: 1.08 0.9;
+    }
+  }
+  [data-slot="button"]:focus-visible,
+  .rubber-link:focus-visible {
+    scale: 1.08 0.9;
+  }
+  [data-slot="button"]:active,
+  .rubber-link:active {
+    scale: 0.92 1.1;
+  }
+}
+
+/* A wanted poster pinned to the wall: it hangs crooked and straightens when picked. */
+.poster {
+  position: relative;
+  rotate: var(--tilt, 0deg);
+  transition:
+    rotate 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    scale 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    translate 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (hover: hover) {
+  .poster:hover {
+    z-index: 3;
+    rotate: 0deg;
+    scale: 1.07;
+    translate: 0 -8px;
+  }
+}
+.poster:focus-visible {
+  z-index: 3;
+  rotate: 0deg;
+  scale: 1.07;
+  translate: 0 -8px;
+  outline: 3px solid var(--spot);
+  outline-offset: 6px;
+}
+.poster:active {
+  scale: 0.97;
+}
+.poster__pin {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--spot);
+  translate: -50% 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .poster {
+    transition: none;
+  }
+  .poster:hover,
+  .poster:focus-visible {
+    scale: none;
+    translate: none;
+  }
+}
+
+/* Buttons answer in ink, never by fading: solid floods red, outline inverts, and both throw a
+   hard shadow as they lift. `--ink` and `--paper` are what the hand-drawn frame is filled with. */
+[data-slot="button"] > [data-slot="ink-frame"] {
+  opacity: 1 !important;
+}
+@media (hover: hover) {
+  [data-slot="button"].bg-primary:hover {
+    --ink: var(--spot);
+    box-shadow: 4px 4px 0 var(--foreground);
+  }
+  [data-slot="button"].bg-background:hover {
+    --paper: var(--foreground);
+    color: var(--background);
+    box-shadow: 4px 4px 0 var(--spot);
+  }
+  [data-slot="button"].font-display:hover {
+    --paper: var(--spot);
+    color: var(--spot-foreground);
+    box-shadow: 4px 4px 0 var(--foreground);
+  }
+  [data-slot="button"]:not(.bg-primary, .bg-background, .font-display):hover {
+    background: var(--foreground);
+    color: var(--background);
+  }
+}
+/* Keyboard focus gets the same ink as the pointer, plus a hard outline, in place of the theme's
+   half-strength ring. */
+[data-slot="button"]:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+[data-slot="button"].bg-primary:focus-visible {
+  --ink: var(--spot);
+  box-shadow: 4px 4px 0 var(--foreground);
+}
+[data-slot="button"].bg-background:focus-visible {
+  --paper: var(--foreground);
+  color: var(--background);
+  box-shadow: 4px 4px 0 var(--spot);
+}
+[data-slot="button"].font-display:focus-visible {
+  --paper: var(--spot);
+  color: var(--spot-foreground);
+  box-shadow: 4px 4px 0 var(--foreground);
+}
+[data-slot="button"]:not(.bg-primary, .bg-background, .font-display):focus-visible {
+  background: var(--foreground);
+  color: var(--background);
+  box-shadow: 4px 4px 0 var(--spot);
+}
+
+/* A badge that links somewhere (the crew names on /story) turns to solid ink instead of fading. */
+a.group\/badge > [data-slot="ink-frame"] {
+  opacity: 1 !important;
+}
+@media (hover: hover) {
+  a.group\/badge:hover {
+    --ink: var(--foreground);
+    box-shadow: 3px 3px 0 var(--spot);
+  }
+}
+a.group\/badge:focus-visible {
+  --ink: var(--foreground);
+  box-shadow: 3px 3px 0 var(--spot);
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+/* The logo: a stroke of ink under it, where the squash alone would vanish under reduced motion. */
+.rubber-link {
+  display: inline-block;
+}
+@media (hover: hover) {
+  .rubber-link:hover {
+    box-shadow: 0 4px 0 var(--foreground);
+  }
+}
+.rubber-link:focus-visible {
+  box-shadow: 0 4px 0 var(--foreground);
+  outline: 3px solid var(--spot);
+  outline-offset: 6px;
+}
+
+/* A text link in running copy: underlined at rest, flooded with ink when picked. The block
+   padding gives it a 24px target without moving the line. */
+.ink-link {
+  padding: 0.25rem 0.125rem;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+@media (hover: hover) {
+  .ink-link:hover {
+    background: var(--foreground);
+    color: var(--background);
+    text-decoration-color: transparent;
+  }
+}
+.ink-link:focus-visible {
+  background: var(--foreground);
+  color: var(--background);
+  text-decoration-color: transparent;
+  outline: 3px solid var(--spot);
+  outline-offset: 2px;
+}
+
+/* The wave of ink that washes over the screen between pages (components/page-wipe.tsx). */
+.page-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  visibility: hidden;
+  overflow: clip;
+  pointer-events: none;
+}
+/* Taller than the screen by its crest, so at rest it covers every pixel. */
+.page-wipe__sea {
+  position: absolute;
+  inset: -5rem 0 0;
+  padding-top: 5rem;
+  color: var(--ink);
+  background: linear-gradient(var(--ink), var(--ink)) 0 5rem / 100% 100% no-repeat;
+}
+.page-wipe__crest {
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  width: 200%;
+  min-width: 90rem;
+  height: 4.3rem;
+}
+.page-wipe__ship {
+  position: absolute;
+  top: -5.25rem;
+  left: 12%;
+  width: clamp(6rem, 14vw, 10rem);
+  height: clamp(6rem, 14vw, 10rem);
+  margin-left: calc(clamp(6rem, 14vw, 10rem) / -2);
+}
+
+/* The voyage timeline: a route through the sagas and the ship that sails it. */
+.voyage-route {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3.5rem;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.voyage-route path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.voyage-route--sailed {
+  clip-path: inset(0 0 100% 0);
+}
+.voyage-node {
+  position: relative;
+  z-index: 1;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+}
+.voyage-static {
+  position: relative;
+  z-index: 2;
+  margin-right: -2.75rem;
+}
+.voyage-ship {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: none;
+  width: 4rem;
+  height: 4rem;
+  margin: -2.25rem 0 0 -2rem;
+  pointer-events: none;
+}
+.voyage-ship__hull {
+  position: absolute;
+  inset: 0;
+  transition: scale 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: voyage-bob 1.8s ease-in-out infinite alternate;
+}
+.voyage-ship[data-heading="left"] .voyage-ship__hull {
+  scale: -1 1;
+}
+.voyage-ship svg {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 0.25s,
+    scale 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.voyage-ship[data-ship="merry"] svg[data-ship="sunny"],
+.voyage-ship[data-ship="sunny"] svg[data-ship="merry"] {
+  opacity: 0;
+  scale: 0.5;
+}
+@keyframes voyage-bob {
+  from {
+    translate: 0 -2px;
+    rotate: -4deg;
+  }
+  to {
+    translate: 0 2px;
+    rotate: 4deg;
+  }
+}
+html.motion .voyage-ship {
+  display: block;
+}
+html.motion .voyage-static {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .voyage-route {
+    left: calc(50% - 4.5rem);
+    width: 9rem;
+  }
+  .voyage-ship {
+    width: 7.5rem;
+    height: 7.5rem;
+    margin: -4.5rem 0 0 -3.75rem;
+  }
+}
+
+/* A crew member's growth timeline: a dashed route, inked over as it is scrolled. */
+.growth-line {
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 0.875rem;
+  width: 0;
+  border-left: 3px dashed var(--tone-3);
+}
+.growth-line--inked {
+  border-left: 3px solid var(--ink);
+}
+html.motion .growth-line--inked {
+  scale: 1 0;
+  transform-origin: 50% 0%;
+}
+.growth-node {
+  position: absolute;
+  top: 0.75rem;
+  left: -2.5rem;
+  z-index: 1;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  line-height: 1;
+}
+@media (min-width: 40rem) {
+  .growth-line {
+    left: 1.375rem;
+  }
+  .growth-node {
+    left: -3.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* The closing scene: bands of sea that drift at their own speeds, and a ship that rides them. */
+@keyframes sea-drift {
+  to {
+    translate: -50% 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sea-wave {
+    animation: sea-drift 20s linear infinite;
+  }
+  .sea-ship {
+    animation: voyage-bob 2.2s ease-in-out infinite alternate;
+    transform-origin: 50% 90%;
+  }
+}

@@ -1,0 +1,143 @@
+/* The story page's sea chart (components/story-chart.tsx). */
+
+.story-chart {
+  position: sticky;
+  top: 5rem;
+  gap: 0.75rem;
+  height: calc(100svh - 6.5rem);
+  min-height: 28rem;
+}
+.story-chart__now {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-height: 4.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.story-chart__map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border: 2px solid var(--ink);
+  overflow: clip;
+}
+.story-chart__route,
+.story-chart__sailed {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.story-chart__route {
+  stroke: var(--tone-3);
+  stroke-width: 2;
+  stroke-dasharray: 2 6;
+}
+.story-chart__sailed {
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+.story-chart__sea {
+  position: absolute;
+  right: 0.25rem;
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--tone-4);
+  writing-mode: vertical-rl;
+  pointer-events: none;
+}
+.story-chart__stop {
+  position: absolute;
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  translate: -50% -50%;
+}
+/* A bigger target than the dot itself. */
+.story-chart__stop::after {
+  position: absolute;
+  inset: -0.4rem;
+  content: "";
+}
+.story-chart__stop[data-saga-start="true"] {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 0;
+  rotate: 45deg;
+}
+.story-chart__stop[data-passed="true"] {
+  background: var(--ink);
+}
+.story-chart__stop[aria-current="step"] {
+  background: var(--spot);
+}
+.story-chart__stop:focus-visible {
+  outline: 3px solid var(--spot);
+  outline-offset: 3px;
+}
+@media (hover: hover) {
+  .story-chart__stop:hover {
+    background: var(--spot);
+    box-shadow: 0 0 0 3px var(--ink);
+  }
+}
+.story-chart__ship {
+  position: absolute;
+  z-index: 1;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -2.1rem 0 0 -1.375rem;
+  pointer-events: none;
+}
+
+.story-strip {
+  position: sticky;
+  top: 5.75rem;
+  z-index: 9;
+  gap: 0.35rem;
+  margin-inline: -1rem;
+  padding: 0.5rem 1rem 0.6rem;
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper);
+}
+.story-strip__track {
+  position: relative;
+  height: 0.25rem;
+  margin-right: 1rem;
+  background: var(--tone-2);
+}
+.story-strip__sailed {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform-origin: 0 50%;
+}
+.story-strip__ship {
+  position: absolute;
+  top: 50%;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: -1.3rem 0 0 -0.875rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .story-chart__ship {
+    transition:
+      left 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      top 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .story-strip__ship {
+    transition: left 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .story-strip__sailed {
+    transition: scale 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
