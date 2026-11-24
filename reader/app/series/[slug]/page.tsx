@@ -17,8 +17,9 @@ import {
   toVolumes,
 } from "@/lib/series";
 
-// Every series page is prerendered and tiny, so the route blocks on its params: an unknown slug
-// gets a real 404 status instead of a streamed not-found.
+// Every series page is prerendered, so the route opts out of instant-navigation validation and
+// blocks on its params. An unknown slug renders the not-found page; under `next start` the first
+// request for a given unknown slug still answers 200 (a streamed not-found) and later ones 404.
 export const instant = false;
 
 export function generateStaticParams() {
@@ -76,7 +77,12 @@ export default async function SeriesPage({ params }: PageProps<"/series/[slug]">
           </TabsList>
           <TabsContent value="chapters" className="flex flex-col gap-4">
             <h2 className="font-display text-xl">{`${chapters.length} chapters`}</h2>
-            <ChapterList chapters={chapters} label={`${series.title} chapters`} />
+            <ChapterList
+              chapters={chapters}
+              label={`${series.title} chapters`}
+              // Only a running series has a NEW chapter.
+              latest={series.status === "ongoing"}
+            />
           </TabsContent>
           <TabsContent value="volumes" className="flex flex-col gap-4">
             <h2 className="font-display text-xl">{`${volumes.length} volumes`}</h2>

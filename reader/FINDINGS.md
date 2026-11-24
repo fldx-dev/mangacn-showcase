@@ -63,9 +63,30 @@ each workaround lives in site code.
 - **What happened:** volume-grid's NEW stamp (`absolute -top-3 right-2`) and series-header's status
   stamp (`-top-4 -right-4`) are fixed to the top-right; there is no prop to move them. A cover with
   its title across the top (the usual manga layout) has the stamp covering the title's end.
-- **Workaround:** Inkwell's generated covers set the title left-aligned and narrow
-  (`lib/covers.ts`). On the narrowest phone covers the NEW seal still touches the last letters.
+- **Workaround:** Inkwell's generated covers put the title in a bottom band and the folio top-left
+  (`lib/covers.ts`), leaving the top-right corner to the stamps.
 - **Suggested fix:** a `stampSide` / `stampClassName` prop on both.
+
+## 7. Blocks render plain `<a href>`; no way to use `next/link`
+
+- **What happened:** `Shelf`/`VolumeGrid` covers, `ContinueReading`'s Resume, `ChapterList` rows
+  and `SeriesHeader`'s Start reading are plain anchors (some via Button `render={<a />}`), with
+  no `linkComponent`/`renderLink` prop. In a Next app every one of those clicks is a full page
+  load with no prefetch, while the site's own sidebar and breadcrumbs (`next/link`) navigate
+  client-side.
+- **Repro:** `/` → click a cover: the network panel shows a document request, not an RSC fetch.
+- **Workaround:** none; accepted the full loads.
+- **Suggested fix:** a `linkAs`/`render` prop for the link element on each block (Base UI style).
+
+## 8. `shadcn add` stops on an overwrite prompt after `shadcn init`
+
+- **What happened:** `shadcn init` installs stock `components/ui/button.tsx`; the first
+  `npx shadcn@latest add @mangacn/library-page ... -y` then asks "button.tsx already exists.
+  Would you like to overwrite?" (`-y` does not answer it). Non-interactive, it declines and keeps
+  stock button.
+- **Repro:** `create-next-app` → `shadcn init -d` → `shadcn add @mangacn/library-page -y`.
+- **Workaround:** re-ran with `--overwrite` so mangacn's inked button replaced stock's.
+- **Suggested fix:** document `--overwrite` in the install instructions.
 
 ---
 
@@ -84,5 +105,7 @@ Items installed and where they are used:
 | panel | 404 and chapter coming-soon pages |
 | caption-box | genres row on `/series/[slug]`; 404 and coming-soon pages |
 | speech-bubble | `/` intro; 404 and coming-soon pages |
-| button, empty, progress, card, manga-frame, stamp, item, ink-mark, page-number, panel-grid, aspect-ratio | inside the blocks above |
-| sidebar-07 (`app-sidebar`, `nav-*`, `team-switcher`) | installed, unused (see 2) |
+| button, empty, progress, card, manga-frame, stamp, item, ink-mark, page-number, panel-grid, aspect-ratio, ink-frame | inside the blocks above |
+| sheet, tooltip, input, skeleton, use-mobile (via sidebar) | inside the sidebar (sheet on phones, tooltips when collapsed) |
+| sidebar-07 (`app-sidebar`, `nav-*`, `team-switcher`) with avatar, dropdown-menu, collapsible | installed, unused (see 2) |
+| power-gauge, power-gauge-burst, emanata, sfx-text | pulled in as dependencies, not used by Inkwell pages |

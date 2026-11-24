@@ -68,24 +68,24 @@ function titleLines(title: string): string[] {
   return [words.slice(0, half).join(" "), words.slice(half).join(" ")];
 }
 
-// The title sits left in its band: the top-right corner is where volume-grid and series-header
-// stamp the cover (NEW, 連載中), so it is kept clear.
+// The title runs in a band along the bottom and the folio sits top-left: the top-right corner is
+// where volume-grid and series-header stamp the cover (NEW, 連載中), so it holds only sky.
 /** A cover: a screentone field, the series' ink motif, a title band and, for a volume, a folio. */
 export function coverArt(title: string, kind: Motif, volume = 0): string {
   const id = `c${volume}`;
   const lines = titleLines(title);
-  const size = Math.min(20, Math.floor(150 / Math.max(...lines.map((l) => l.length)) / 0.75));
+  const size = Math.min(20, Math.floor(300 / Math.max(...lines.map((l) => l.length)) / 0.75));
   const text = lines
     .map(
       (line, i) =>
-        `<text x="12" y="${(lines.length === 1 ? 40 : 30) + i * (size + 4)}" font-family="Impact, 'Arial Black', sans-serif" font-size="${size}" fill="${INK}" text-anchor="start" letter-spacing="1">${escape(line)}</text>`,
+        `<text x="100" y="${(lines.length === 1 ? 276 : 264) + i * (size + 4)}" font-family="Impact, 'Arial Black', sans-serif" font-size="${size}" fill="${INK}" text-anchor="middle" letter-spacing="1">${escape(line)}</text>`,
     )
     .join("");
   const folio =
     volume > 0
-      ? `<rect x="150" y="256" width="40" height="36" fill="${INK}"/><text x="170" y="284" font-family="Impact, 'Arial Black', sans-serif" font-size="26" fill="${PAPER}" text-anchor="middle">${volume}</text>`
+      ? `<rect x="10" y="10" width="40" height="36" fill="${INK}"/><text x="30" y="38" font-family="Impact, 'Arial Black', sans-serif" font-size="26" fill="${PAPER}" text-anchor="middle">${volume}</text>`
       : "";
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">${tones(id)}<rect width="200" height="300" fill="url(#${id}-${FIELDS[volume % FIELDS.length]})"/>${motif(kind, volume, id)}<rect width="200" height="64" fill="${PAPER}"/><path d="M0 64 H200" stroke="${INK}" stroke-width="4"/>${text}${folio}</svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">${tones(id)}<rect width="200" height="300" fill="url(#${id}-${FIELDS[volume % FIELDS.length]})"/><g transform="translate(0 -40)">${motif(kind, volume, id)}</g><rect y="236" width="200" height="64" fill="${PAPER}"/><path d="M0 236 H200" stroke="${INK}" stroke-width="4"/>${text}${folio}</svg>`;
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
