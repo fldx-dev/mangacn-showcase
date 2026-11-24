@@ -18,8 +18,7 @@ import {
 } from "@/lib/series";
 
 // Every series page is prerendered, so the route opts out of instant-navigation validation and
-// blocks on its params. An unknown slug renders the not-found page; under `next start` the first
-// request for a given unknown slug still answers 200 (a streamed not-found) and later ones 404.
+// blocks on its params. An unknown slug never reaches it: proxy.ts answers it with a real 404.
 export const instant = false;
 
 export function generateStaticParams() {
