@@ -113,7 +113,8 @@ each workaround lives in site code.
 - **What happened:** spread-viewer handles its keys on its own focusable region ("nothing else
   takes the arrow keys"). On a fresh page load nothing is focused, so Left/Right/Home/End do
   nothing until the reader clicks or tabs into the pages.
-- **Repro:** open `/series/the-saltglass-keeper/3`, press Left without clicking: no turn.
+- **Repro:** render `<Reader>` as installed, load the page and press Left without clicking or
+  tabbing first: no turn.
 - **Workaround:** a window `keydown` listener in `chapter-reader.tsx` turns the page when the key
   lands on `body` (or a non-interactive part of the reader) and the viewer has not already
   handled it (`defaultPrevented`). It turns with the exported `spreadStarts` / `spreadIndexOf`.
@@ -165,6 +166,19 @@ each workaround lives in site code.
   page as the server snapshot. Accepted the switch and the turn.
 - **Suggested fix:** a CSS-driven `single="auto"` (container query: one page below a width), and
   no page-turn animation for the first sync from the address.
+
+## 16. `Button` rendered as a link is announced as a button
+
+- **What happened:** the documented way to make a mangacn `Button` a link,
+  `<Button nativeButton={false} render={<Link href="..." />}>`, renders
+  `<a role="button" href="...">` (Base UI adds the role for non-native buttons). Screen readers
+  announce the chapter links, the end card's "Read chapter 4" and the 404's "Back to the library"
+  as buttons, and `getByRole("link")` does not find them.
+- **Repro:** `/series/the-saltglass-keeper/3`: the "Next: chapter 4" link's outerHTML starts
+  `<a role="button" ...`.
+- **Workaround:** none; accepted (the links work with mouse, touch and Enter).
+- **Suggested fix:** a `ButtonLink` (or `asLink`) that keeps the inked frame and the button
+  classes on a plain anchor, without `role="button"`.
 
 ---
 

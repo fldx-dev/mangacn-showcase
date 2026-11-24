@@ -20,7 +20,7 @@ Metaphor:    Old tankōbon on a shelf: cream paper gone warm, brown-black ink, o
 Signature:   Every cover is a screentone print with one inked motif (lighthouse, kite, tower)
              and a single vermilion accent.
 Emotion:     Quiet, cosy, lamplit. The opposite of a loud launch page.
-Motion verb: None to speak of. The sidebar slides; the page sits still so you can read.
+Motion verb: Turn. A page turns like paper between spreads; everything else sits still.
 Screenshot:  The library at desktop width: Continue reading cards over shelves of covers.
 ```
 

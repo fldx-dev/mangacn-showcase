@@ -362,7 +362,8 @@ export function continueReading(): ReadingProgress[] {
         page,
         pages: found.pages,
         cover: { src: coverArt(series.title, series.motif), alt: "" },
-        href: chapterHref(series, chapter),
+        // The reader opens at ?page= (from 1).
+        href: `${chapterHref(series, chapter)}?page=${page}`,
       },
     ];
   });
